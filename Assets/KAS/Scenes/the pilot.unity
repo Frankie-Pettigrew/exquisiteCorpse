@@ -168,6 +168,14 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2300004, guid: 837c30a9f5d50aa418ef29b0374b6a70, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 338fc37e2be3b7f45a0fc06b87f0dd88, type: 2}
+    - target: {fileID: 2300000, guid: 837c30a9f5d50aa418ef29b0374b6a70, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f25fec2b214db2748b836d45aa11077d, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 837c30a9f5d50aa418ef29b0374b6a70, type: 3}
   m_IsPrefabParent: 0
@@ -541,8 +549,8 @@ GameObject:
   - component: {fileID: 756387591}
   - component: {fileID: 756387590}
   - component: {fileID: 756387589}
-  - component: {fileID: 756387593}
   - component: {fileID: 756387594}
+  - component: {fileID: 756387593}
   m_Layer: 0
   m_Name: Wanderer
   m_TagString: Player
@@ -556,7 +564,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 756387588}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -627,7 +635,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 5
+  m_Speed: 30
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -654,6 +662,9 @@ MonoBehaviour:
   - {fileID: 486854053}
   - {fileID: 1784220542}
   currentDest: 0
+  airship: {fileID: 1297268693}
+  fallSpeed: 50
+  crashDestination: {fileID: 1998114379}
 --- !u!1 &834490846
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,6 +1017,10 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!1 &1297268693 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: 837c30a9f5d50aa418ef29b0374b6a70, type: 3}
+  m_PrefabInternal: {fileID: 137840633}
 --- !u!1 &1512480461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1592,6 +1607,34 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!1 &1998114378
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1998114379}
+  m_Layer: 0
+  m_Name: CrashDest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1998114379
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1998114378}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 37, y: 0, z: -105}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2027966555
 GameObject:
   m_ObjectHideFlags: 0
