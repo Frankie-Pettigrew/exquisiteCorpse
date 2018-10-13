@@ -14,11 +14,13 @@ public class MovePlayer : MonoBehaviour {
     public GameObject airship;
     public float fallSpeed;
     public Transform crashDestination;
-    
+
+    public AudioSource planeSource;
 
 	void Start () {
         playerNavMove = GetComponent<NavMeshAgent>();
-        
+        planeSource = airship.GetComponent<AudioSource>();
+        planeSource.Play();
         SetDestination();
 	}
 	
@@ -32,12 +34,16 @@ public class MovePlayer : MonoBehaviour {
                 playerNavMove.isStopped = false;
                 Time.timeScale = 0.5f;
                 airship.transform.position = Vector3.MoveTowards(airship.transform.position, crashDestination.position, fallSpeed * Time.deltaTime);
+                if(!planeSource.isPlaying)
+                    planeSource.UnPause();
+
             }
             //stay stopped
             else
             {
                 playerNavMove.isStopped = true;
                 Time.timeScale = 0.1f;
+                planeSource.Pause();
             }
         }
         else
