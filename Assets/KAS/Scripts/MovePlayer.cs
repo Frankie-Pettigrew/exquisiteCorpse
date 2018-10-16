@@ -65,12 +65,23 @@ public class MovePlayer : MonoBehaviour {
     //called only while player is moving
     void ShipsFall()
     {
-        float randomTranslateX = Random.Range(-1f, 1f);
-        float randomTranslateZ = Random.Range(-1f, 1f);
+        //while falling through air
+        if( currentCrashPoint < 3)
+        {
+            //randomly shake while falling
+            float randomTranslateX = Random.Range(-1f, 1f);
+            float randomTranslateZ = Random.Range(-1f, 1f);
 
-        airship.transform.Translate(randomTranslateX, 0, randomTranslateZ);
+            airship.transform.Translate(randomTranslateX, 0, randomTranslateZ);
 
-        if(Vector3.Distance(airship.transform.position, crashPoints[currentCrashPoint].position) > 0.25f)
+            //spin plane around z axis
+            float randomRotate = Random.Range(0, 5f);
+
+            airship.transform.Rotate(0, 0, randomRotate);
+        }
+
+        //always move towards next crash point at fallSpeed
+        if (Vector3.Distance(airship.transform.position, crashPoints[currentCrashPoint].position) > 0.25f)
         {
             airship.transform.position = Vector3.MoveTowards(airship.transform.position, crashPoints[currentCrashPoint].position, fallSpeed * Time.deltaTime);
         }
@@ -79,10 +90,7 @@ public class MovePlayer : MonoBehaviour {
             currentCrashPoint++;
         }
 
-        float randomRotate = Random.Range(0, 5f);
-
-        airship.transform.Rotate(0,0, randomRotate);
-
+        //spawn smoke clouds at smokeSpawnTotal interval
         smokeSpawnTimer -= Time.deltaTime;
 
         if(smokeSpawnTimer < 0)
