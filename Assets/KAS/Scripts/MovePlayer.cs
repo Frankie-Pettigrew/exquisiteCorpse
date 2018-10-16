@@ -7,21 +7,24 @@ public class MovePlayer : MonoBehaviour {
 
     NavMeshAgent playerNavMove;
 
-    public Transform[] movementPoints;
+    public Transform[] movementPoints, crashPoints;
 
-    public int currentDest = 0;
+    public int currentDest = 0, currentCrashPoint = 0;
 
-    public GameObject airship;
+    public GameObject airship, crashingSmokes;
     public float fallSpeed;
-    public Transform crashDestination;
 
     public AudioSource planeSource;
+
+    float smokeSpawnTimer;
+    public float smokeSpawnTotal = 1;
 
 	void Start () {
         playerNavMove = GetComponent<NavMeshAgent>();
         planeSource = airship.GetComponent<AudioSource>();
         planeSource.Play();
         SetDestination();
+        smokeSpawnTimer = smokeSpawnTotal;
 	}
 	
 	void Update () {
@@ -33,9 +36,12 @@ public class MovePlayer : MonoBehaviour {
             {
                 playerNavMove.isStopped = false;
                 Time.timeScale = 0.5f;
-                airship.transform.position = Vector3.MoveTowards(airship.transform.position, crashDestination.position, fallSpeed * Time.deltaTime);
-                if(!planeSource.isPlaying)
+                ShipsFall();
+                if (!planeSource.isPlaying)
                     planeSource.UnPause();
+
+                //play fast character dialogue ( voice and text)
+                //play fast character animations
 
             }
             //stay stopped
@@ -44,6 +50,9 @@ public class MovePlayer : MonoBehaviour {
                 playerNavMove.isStopped = true;
                 Time.timeScale = 0.1f;
                 planeSource.Pause();
+
+                //play normal character dialogue ( voice and text)
+                //play normal character animations
             }
         }
         else
@@ -53,6 +62,38 @@ public class MovePlayer : MonoBehaviour {
         }
 	}
 
+    //called only while player is moving
+    void ShipsFall()
+    {
+        float randomTranslateX = Random.Range(-1f, 1f);
+        float randomTranslateZ = Random.Range(-1f, 1f);
+
+        airship.transform.Translate(randomTranslateX, 0, randomTranslateZ);
+
+        if(Vector3.Distance(airship.transform.position, crashPoints[currentCrashPoint].position) > 0.25f)
+        {
+            airship.transform.position = Vector3.MoveTowards(airship.transform.position, crashPoints[currentCrashPoint].position, fallSpeed * Time.deltaTime);
+        }
+        else
+        {
+            currentCrashPoint++;
+        }
+
+        float randomRotate = Random.Range(0, 5f);
+
+        airship.transform.Rotate(0,0, randomRotate);
+
+        smokeSpawnTimer -= Time.deltaTime;
+
+        if(smokeSpawnTimer < 0)
+        {
+            GameObject smokeClone = Instantiate(crashingSmokes, airship.transform.position, Quaternion.identity);
+
+            smokeSpawnTimer = smokeSpawnTotal;
+        }
+    }
+
+    //called when player arrives at desired movement point
     void SetDestination()
     {
         playerNavMove.SetDestination(movementPoints[currentDest].position);
