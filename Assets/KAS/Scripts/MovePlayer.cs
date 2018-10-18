@@ -12,7 +12,7 @@ public class MovePlayer : MonoBehaviour {
     public int currentDest = 0, currentCrashPoint = 0;
 
     public GameObject airship, crashingSmokes;
-    public float fallSpeed;
+    public float moveSpeed, fallSpeed, crashSpeed;
 
     public AudioSource planeSource;
 
@@ -75,19 +75,66 @@ public class MovePlayer : MonoBehaviour {
             airship.transform.Translate(randomTranslateX, 0, randomTranslateZ);
 
             //spin plane around z axis
-            float randomRotate = Random.Range(0, 5f);
+            float randomRotate = Random.Range(0f, 5f);
 
             airship.transform.Rotate(0, 0, randomRotate);
+
+            moveSpeed = fallSpeed;
+        }
+        //hitting the ground
+        else if(currentCrashPoint == 3)
+        {
+            airship.transform.localEulerAngles += new Vector3(0.5f, 0, 0);
+
+            moveSpeed = crashSpeed;
+        }
+
+        //bouncing up
+        else if(currentCrashPoint == 4)
+        {
+
         }
 
         //always move towards next crash point at fallSpeed
         if (Vector3.Distance(airship.transform.position, crashPoints[currentCrashPoint].position) > 0.25f)
         {
-            airship.transform.position = Vector3.MoveTowards(airship.transform.position, crashPoints[currentCrashPoint].position, fallSpeed * Time.deltaTime);
+            airship.transform.position = Vector3.MoveTowards(airship.transform.position, crashPoints[currentCrashPoint].position, moveSpeed * Time.deltaTime);
         }
         else
         {
             currentCrashPoint++;
+
+            //activate tiny flame particles
+            if(currentCrashPoint == 2)
+            {
+
+            }
+
+            //reset rotation before the crash
+            if(currentCrashPoint == 3)
+            {
+                airship.transform.localEulerAngles = new Vector3(airship.transform.localEulerAngles.x, airship.transform.localEulerAngles.y, 0f);
+
+                //activate dirt effect on terrain
+            }
+
+            //activate more flame particles
+            if (currentCrashPoint == 4)
+            {
+                //activate dirt effect on terrain
+            }
+
+            //activate final flame particles
+            if (currentCrashPoint == 5)
+            {
+                //activate dirt effect on terrain
+            }
+
+            //activate final flame particles
+            if (currentCrashPoint == 5)
+            {
+                //activate dirt effect on terrain
+            }
         }
 
         //spawn smoke clouds at smokeSpawnTotal interval

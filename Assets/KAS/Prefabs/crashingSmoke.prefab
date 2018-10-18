@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4402182362757958}
   - component: {fileID: 198340249821222064}
   - component: {fileID: 199145591024181648}
+  - component: {fileID: 114106096051352450}
   m_Layer: 0
   m_Name: crashingSmoke
   m_TagString: Untagged
@@ -41,6 +42,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114106096051352450
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1833926567734050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b51b1fe37b62754c8a67eb6a29bcfd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smokeFaces:
+  - {fileID: 2100000, guid: 00560f5a9779caf46ac8a9b749917cd6, type: 2}
+  - {fileID: 2100000, guid: 9abd25ccc40d5044d9ead20802c1c404, type: 2}
+  - {fileID: 2100000, guid: e5d2d9d2f29e5b2419ec210dd53903cc, type: 2}
+  - {fileID: 2100000, guid: 987f00197703b4f4a8635fcf73c4327a, type: 2}
+  - {fileID: 2100000, guid: 3dba91becbe3acc488d97cc6e2e332c0, type: 2}
+  - {fileID: 2100000, guid: 0f4cdd56f469c1a459fa748d62655092, type: 2}
 --- !u!198 &198340249821222064
 ParticleSystem:
   m_ObjectHideFlags: 1
