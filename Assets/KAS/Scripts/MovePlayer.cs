@@ -19,12 +19,16 @@ public class MovePlayer : MonoBehaviour {
     float smokeSpawnTimer;
     public float smokeSpawnTotal = 1;
 
+    SimpleClock clock;
+    public float normalBPM, fastBPM;
+
 	void Start () {
         playerNavMove = GetComponent<NavMeshAgent>();
         planeSource = airship.GetComponent<AudioSource>();
         planeSource.Play();
         SetDestination();
         smokeSpawnTimer = smokeSpawnTotal;
+        clock = GameObject.FindGameObjectWithTag("SimpleClock").GetComponent<SimpleClock>();
 	}
 	
 	void Update () {
@@ -38,7 +42,11 @@ public class MovePlayer : MonoBehaviour {
                 Time.timeScale = 0.5f;
                 ShipsFall();
                 if (!planeSource.isPlaying)
+                {
                     planeSource.UnPause();
+                    clock.SetBPM(fastBPM);
+                }
+                   
 
                 //play fast character dialogue ( voice and text)
                 //play fast character animations
@@ -51,7 +59,13 @@ public class MovePlayer : MonoBehaviour {
             {
                 playerNavMove.isStopped = true;
                 Time.timeScale = 0.1f;
-                planeSource.Pause();
+
+                if (planeSource.isPlaying)
+                {
+                    planeSource.Pause();
+                    clock.SetBPM(normalBPM);
+                }
+             
 
                 //play normal character dialogue ( voice and text)
                 //play normal character animations
