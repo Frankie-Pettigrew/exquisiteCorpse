@@ -42,6 +42,8 @@ public class MovePlayer : MonoBehaviour {
 
                 //play fast character dialogue ( voice and text)
                 //play fast character animations
+                //SimpleClock.SetBPM(); -- faster
+                //set bool audioSpeed true == fast clips on sound producers
 
             }
             //stay stopped
@@ -53,6 +55,8 @@ public class MovePlayer : MonoBehaviour {
 
                 //play normal character dialogue ( voice and text)
                 //play normal character animations
+                //SimpleClock.SetBPM(); -- slower
+                //set bool audioSpeed false == slow clips on sound producers
             }
         }
         else
