@@ -2,31 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class RhythmProducer : MonoBehaviour {
+public class RhythmProducer : MonoBehaviour {
     public AudioClip[] basicBeats;
-    protected AudioSource beatSource;
+    public AudioSource beatSource;
 
-    public Animator rhythmIndicator;
-
-    protected bool playedAudio, showRhythm;
+    public bool playedAudio, showRhythm, changeRhythm;
 
     public int timeScale;
 
-    protected float disappearTimer, disappearTimerTotal = 1f;
+    public ParticleSystem smokeParticles;
 
-    public virtual void Awake()
+    public void Awake()
     {
-        
         SimpleClock.ThirtySecond += OnThirtySecond;
     }
 
-    public virtual void OnDestroy()
+    public void OnDestroy()
     {
         SimpleClock.ThirtySecond -= OnThirtySecond;
     }
 
-    public virtual void OnThirtySecond(BeatArgs e)
+    public void OnThirtySecond(BeatArgs e)
     {
+        if (e.TickMask[TickValue.Measure])
+        {
+            // rhythm creation / beat visual
+            changeRhythm = true;
+        }
+
+        else if (e.TickMask[TickValue.Quarter])
+        {
+            // rhythm creation / beat visual
+            changeRhythm = true;
+        }
+
         switch (timeScale)
         {
             case 0:
@@ -68,14 +77,35 @@ public abstract class RhythmProducer : MonoBehaviour {
 
     }
 
+    public void Start()
+    {
+        // randomize tempo var?
+        beatSource = GetComponent<AudioSource>();
+
+        RandomClip();
+
+        RandomTempo();
+    }
+
     // Update is called once per frame
     public void Update () {
         //may need to qualify this with and if statement in override
         AudioRhythm();
     }
 
+    public void RandomTempo()
+    {
+        int randomTempo = Random.Range(0, 4);
+        timeScale = randomTempo;
+    }
 
-    public virtual void AudioRhythm()
+    public void RandomClip()
+    {
+        int randomClip = Random.Range(0, basicBeats.Length);
+        beatSource.clip = basicBeats[randomClip];
+    }
+
+    public void AudioRhythm()
     {
         if (!playedAudio)
         {
@@ -86,14 +116,22 @@ public abstract class RhythmProducer : MonoBehaviour {
         {
             if (!beatSource.isPlaying)
             {
+                if (changeRhythm)
+                {
+                    RandomClip();
+                    RandomTempo();
+                    changeRhythm = false;
+                }
+
                 SwitchTimeScale();
                 playedAudio = false;
 
             }
         }
+       
     }
 
-    public virtual void SwitchTimeScale()
+    public void SwitchTimeScale()
     {
         switch (timeScale)
         {
