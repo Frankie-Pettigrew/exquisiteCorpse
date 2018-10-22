@@ -10,7 +10,13 @@ public class RhythmProducer : MonoBehaviour {
 
     public int timeScale;
 
-    public ParticleSystem smokeParticles;
+    public List<ParticleSystem> smokeParticles = new List<ParticleSystem>();
+
+    public Animation animator;
+
+    SmokeGenerator smokeGen;
+
+    public int smokeCounter = 0;
 
     public void Awake()
     {
@@ -30,11 +36,11 @@ public class RhythmProducer : MonoBehaviour {
             changeRhythm = true;
         }
 
-        else if (e.TickMask[TickValue.Quarter])
-        {
-            // rhythm creation / beat visual
-            changeRhythm = true;
-        }
+        //else if (e.TickMask[TickValue.Quarter])
+        //{
+        //    // rhythm creation / beat visual
+        //    changeRhythm = true;
+        //}
 
         switch (timeScale)
         {
@@ -79,6 +85,13 @@ public class RhythmProducer : MonoBehaviour {
 
     public void Start()
     {
+        for(int i = 0; i < 3; i++)
+        {
+            smokeParticles.Add(transform.GetChild(i).GetComponent<ParticleSystem>());
+        }
+
+        animator = GetComponent<Animation>();
+
         // randomize tempo var?
         beatSource = GetComponent<AudioSource>();
 
@@ -118,8 +131,14 @@ public class RhythmProducer : MonoBehaviour {
             {
                 if (changeRhythm)
                 {
-                    RandomClip();
-                    RandomTempo();
+                    float randomChance = Random.Range(0, 100);
+
+                    if(randomChance > 50)
+                    {
+                        RandomClip();
+                        RandomTempo();
+                    }
+                    
                     changeRhythm = false;
                 }
 
@@ -128,7 +147,26 @@ public class RhythmProducer : MonoBehaviour {
 
             }
         }
-       
+
+        //for showing smoke when a note is destined to play
+        if (showRhythm)
+        {
+            animator.Play();
+            smokeGen = smokeParticles[smokeCounter].GetComponent<SmokeGenerator>();
+            smokeGen.SmokeIt();
+            smokeParticles[smokeCounter].Play();
+            showRhythm = false;
+
+            if(smokeCounter < 2)
+            {
+                smokeCounter++;
+            }
+            else
+            {
+                smokeCounter = 0;
+            }
+           
+        }
     }
 
     public void SwitchTimeScale()

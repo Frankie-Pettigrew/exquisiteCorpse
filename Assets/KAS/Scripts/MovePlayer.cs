@@ -22,6 +22,13 @@ public class MovePlayer : MonoBehaviour {
     SimpleClock clock;
     public float normalBPM, fastBPM;
 
+    public bool hasCrashed, lerpingFOV;
+
+    Camera myCam;
+
+    //going to need to work diligently on getting character animations, dialogue and character sounds right based on timescale
+    //look at deathChess for help typing out the strings one by one
+
 	void Start () {
         playerNavMove = GetComponent<NavMeshAgent>();
         planeSource = airship.GetComponent<AudioSource>();
@@ -29,6 +36,7 @@ public class MovePlayer : MonoBehaviour {
         SetDestination();
         smokeSpawnTimer = smokeSpawnTotal;
         clock = GameObject.FindGameObjectWithTag("SimpleClock").GetComponent<SimpleClock>();
+        myCam = Camera.main;
 	}
 	
 	void Update () {
@@ -39,18 +47,20 @@ public class MovePlayer : MonoBehaviour {
             if (Input.GetMouseButton(0))
             {
                 playerNavMove.isStopped = false;
-                Time.timeScale = 0.5f;
-                ShipsFall();
-                if (!planeSource.isPlaying)
+
+                if (!hasCrashed)
                 {
-                    planeSource.UnPause();
-                    clock.SetBPM(fastBPM);
+                    Time.timeScale = 0.5f;
+                    ShipsFall();
+                    if (!planeSource.isPlaying)
+                    {
+                        planeSource.UnPause();
+                        clock.SetBPM(fastBPM);
+                    }
                 }
-                   
 
                 //play fast character dialogue ( voice and text)
                 //play fast character animations
-                //SimpleClock.SetBPM(); -- faster
                 //set bool audioSpeed true == fast clips on sound producers
 
             }
@@ -58,18 +68,22 @@ public class MovePlayer : MonoBehaviour {
             else
             {
                 playerNavMove.isStopped = true;
-                Time.timeScale = 0.1f;
 
-                if (planeSource.isPlaying)
+               
+
+                if (!hasCrashed)
                 {
-                    planeSource.Pause();
-                    clock.SetBPM(normalBPM);
+                    Time.timeScale = 0.1f;
+
+                    if (planeSource.isPlaying)
+                    {
+                        planeSource.Pause();
+                        clock.SetBPM(normalBPM);
+                    }
                 }
-             
 
                 //play normal character dialogue ( voice and text)
                 //play normal character animations
-                //SimpleClock.SetBPM(); -- slower
                 //set bool audioSpeed false == slow clips on sound producers
             }
         }
@@ -78,7 +92,17 @@ public class MovePlayer : MonoBehaviour {
             currentDest++;
             SetDestination();
         }
+
+        if (lerpingFOV)
+        {
+            myCam.fieldOfView = Mathf.Lerp(myCam.fieldOfView, 100, Time.deltaTime * 5);
+            if(myCam.fieldOfView > 100)
+            {
+                lerpingFOV = false;
+            }
+        }
 	}
+
 
     //called only while player is moving
     void ShipsFall()
@@ -152,6 +176,21 @@ public class MovePlayer : MonoBehaviour {
             if (currentCrashPoint == 5)
             {
                 //activate dirt effect on terrain
+            }
+
+            //final chance to add effects
+            if (currentCrashPoint == 6)
+            {
+                
+            }
+
+            //activate final flame particles
+            if (currentCrashPoint == 7)
+            {
+                hasCrashed = true;
+                lerpingFOV = true;
+                playerNavMove.speed = 30;
+                Time.timeScale = 1;
             }
         }
 

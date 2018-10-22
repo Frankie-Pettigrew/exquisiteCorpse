@@ -11,10 +11,15 @@ public class SmokeGenerator : MonoBehaviour {
 	void Start () {
         smoker = GetComponent<ParticleSystem>();
 
+        SmokeIt();
+
+	}
+
+    public void SmokeIt()
+    {
         int randomSmoker = Random.Range(0, smokeFaces.Length);
 
         smoker.GetComponent<Renderer>().material = smokeFaces[randomSmoker];
-
-	}
+    }
 	
 }
