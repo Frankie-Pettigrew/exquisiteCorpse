@@ -318,6 +318,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basicBeats:
+  - {fileID: 8300000, guid: cedb4d8f7145ff64fb4f5f2e32781ab5, type: 3}
+  - {fileID: 8300000, guid: 5648a5c334d2b6e49b2e1c047d958446, type: 3}
+  - {fileID: 8300000, guid: b6f03f1869248c645ae35ce3433a1c8a, type: 3}
+  - {fileID: 8300000, guid: 589b3dda01fee814a8e9b3e222bfbf7b, type: 3}
+  - {fileID: 8300000, guid: 9ebdfcba467082740837a84af249632b, type: 3}
   - {fileID: 8300000, guid: 3e1f9831e4a300e439c2937b42ac90c0, type: 3}
   - {fileID: 8300000, guid: 3a7fd77d36fecd143b8e1b40c8305286, type: 3}
   - {fileID: 8300000, guid: cd7ac7e89d86b9341b2157890c446ec0, type: 3}
@@ -341,11 +346,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a2783d08c9a1abe4d8f6d1ee99f75097, type: 3}
   - {fileID: 8300000, guid: c7dd6e0af0bdde743a6d02689c8519d3, type: 3}
   - {fileID: 8300000, guid: 33fec19ef48d0e54aafe90b02ad2d404, type: 3}
-  - {fileID: 8300000, guid: cedb4d8f7145ff64fb4f5f2e32781ab5, type: 3}
-  - {fileID: 8300000, guid: 5648a5c334d2b6e49b2e1c047d958446, type: 3}
-  - {fileID: 8300000, guid: 9ebdfcba467082740837a84af249632b, type: 3}
-  - {fileID: 8300000, guid: 589b3dda01fee814a8e9b3e222bfbf7b, type: 3}
-  - {fileID: 8300000, guid: b6f03f1869248c645ae35ce3433a1c8a, type: 3}
   beatSource: {fileID: 0}
   playedAudio: 0
   showRhythm: 0

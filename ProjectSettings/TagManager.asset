@@ -6,6 +6,9 @@ TagManager:
   tags:
   - MovePoint
   - SimpleClock
+  - GridSpot
+  - Barren
+  - WorldManager
   layers:
   - Default
   - TransparentFX

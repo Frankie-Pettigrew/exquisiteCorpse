@@ -5,8 +5,9 @@ using UnityEngine.AI;
 
 public class MovePlayer : MonoBehaviour {
 
-    NavMeshAgent playerNavMove;
+    public NavMeshAgent playerNavMove;
 
+    public Transform movementPointHolder;
     public Transform[] movementPoints, crashPoints;
 
     public int currentDest = 0, currentCrashPoint = 0;
@@ -26,10 +27,20 @@ public class MovePlayer : MonoBehaviour {
 
     Camera myCam;
 
+    public Animator[] characters;
+    public DialogueText[] dialogues;
+
     //going to need to work diligently on getting character animations, dialogue and character sounds right based on timescale
     //look at deathChess for help typing out the strings one by one
 
 	void Start () {
+        //set our movement points
+        movementPoints = new Transform[movementPointHolder.childCount];
+        for (int i =0; i < movementPointHolder.childCount; i++)
+        {
+            movementPoints[i] = movementPointHolder.transform.GetChild(i);
+        }
+
         playerNavMove = GetComponent<NavMeshAgent>();
         planeSource = airship.GetComponent<AudioSource>();
         planeSource.Play();
@@ -41,7 +52,7 @@ public class MovePlayer : MonoBehaviour {
 	
 	void Update () {
 
-        if(Vector3.Distance(transform.position, movementPoints[currentDest].position) > 3f)
+        if(Vector3.Distance(transform.position, movementPoints[currentDest].position) > 10f)
         {
             //move when mouse down
             if (Input.GetMouseButton(0))
@@ -56,6 +67,8 @@ public class MovePlayer : MonoBehaviour {
                     {
                         planeSource.UnPause();
                         clock.SetBPM(fastBPM);
+                        CharacterSpeeds(50);
+                        DialogueSpeeds(0.0000001f);
                     }
                 }
 
@@ -68,17 +81,19 @@ public class MovePlayer : MonoBehaviour {
             else
             {
                 playerNavMove.isStopped = true;
-
-               
-
+                
                 if (!hasCrashed)
                 {
+                  
                     Time.timeScale = 0.1f;
+                    
 
                     if (planeSource.isPlaying)
                     {
                         planeSource.Pause();
                         clock.SetBPM(normalBPM);
+                        CharacterSpeeds(10);
+                        DialogueSpeeds(0.01f);
                     }
                 }
 
@@ -89,6 +104,7 @@ public class MovePlayer : MonoBehaviour {
         }
         else
         {
+            Debug.Log("got set!");
             currentDest++;
             SetDestination();
         }
@@ -102,6 +118,22 @@ public class MovePlayer : MonoBehaviour {
             }
         }
 	}
+
+    void CharacterSpeeds(float speed)
+    {
+        for(int i = 0; i < characters.Length; i++)
+        {
+            characters[i].speed = speed;
+        }
+    }
+
+    void DialogueSpeeds(float speed)
+    {
+        for (int i = 0; i < dialogues.Length; i++)
+        {
+            dialogues[i].typeSpeed = speed;
+        }
+    }
 
 
     //called only while player is moving
@@ -191,6 +223,7 @@ public class MovePlayer : MonoBehaviour {
                 lerpingFOV = true;
                 playerNavMove.speed = 30;
                 Time.timeScale = 1;
+                CharacterSpeeds(1);
             }
         }
 
@@ -201,6 +234,11 @@ public class MovePlayer : MonoBehaviour {
         {
             GameObject smokeClone = Instantiate(crashingSmokes, airship.transform.position, Quaternion.identity);
 
+            if(currentCrashPoint < 5)
+            {
+                smokeClone.GetComponent<WaitToDestroy>().destroy = true;
+            }
+
             smokeSpawnTimer = smokeSpawnTotal;
         }
     }
@@ -209,5 +247,15 @@ public class MovePlayer : MonoBehaviour {
     void SetDestination()
     {
         playerNavMove.SetDestination(movementPoints[currentDest].position);
+
+        if (currentDest == 1)
+        {
+            dialogues[0].DisableDialogue();
+            //turn on everything after silva
+            for (int i = 1; i < dialogues.Length; i++)
+            {
+                dialogues[i].EnableDialogue(); 
+            }
+        }
     }
 }
