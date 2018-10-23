@@ -2555,13 +2555,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basicBeats:
-  - {fileID: 8300000, guid: ee4b9f768e7745044a65049a390c8cde, type: 3}
-  - {fileID: 8300000, guid: 188a87cd09602334da159729cb87b794, type: 3}
+  - {fileID: 8300000, guid: 03a3a02b4e0ede54c828918daf395005, type: 3}
   - {fileID: 8300000, guid: 07d0a64374301ed4999a1930e4a8ced6, type: 3}
   - {fileID: 8300000, guid: 10c5fcaa03036e4448d3b08b49fb4124, type: 3}
   - {fileID: 8300000, guid: a25b00523018965458f061ce72cf497b, type: 3}
-  - {fileID: 8300000, guid: 0bcd84d6093f21b41a357ada73d9c4c3, type: 3}
-  - {fileID: 8300000, guid: 03a3a02b4e0ede54c828918daf395005, type: 3}
   - {fileID: 8300000, guid: 03a3a02b4e0ede54c828918daf395005, type: 3}
   - {fileID: 8300000, guid: 03a3a02b4e0ede54c828918daf395005, type: 3}
   beatSource: {fileID: 0}
