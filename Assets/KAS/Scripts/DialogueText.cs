@@ -1,39 +1,62 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System;
+using System.Collections.Generic;
+
+//used to fake speaking
+//[Serializable]
+//public struct Alphabet
+//{
+//    public char letter;
+//    public AudioClip spokenSound;
+//}
 
 public class DialogueText : MonoBehaviour
 {
-    Text theText;
-    
-    public string[] textLines;
-
-    public int currentLine;
-    public int endAtLine;
-
+    //player refs
     GameObject player;
     MovePlayer mp;
 
+    //text component and string array of its lines
+    Text theText;
+    public string[] textLines;
+
+    //current and last lines
+    public int currentLine;
+    public int endAtLine;
+
+    //typing vars
     private bool isTyping = false;
     private bool cancelTyping = false;
     public float typeSpeed;
 
+    //wait between lines
+    public float waitTime;
+
+    //check this to start at start
     public bool enableAtStart;
 
-    AudioSource myVoice;
+    //audio stuff
+    public AudioSource[] myVoices;
+    public int currentVoice;
     public AudioClip[] mySounds;
+
+    //for spoken alphabet
+    public List<char> letters = new List<char>();
+    public List<char> capitalLetters = new List<char>();
+    public List<AudioClip> spokenSounds = new List<AudioClip>();
 
     void Start()
     {
+        //grab refs
         player = GameObject.FindGameObjectWithTag("Player");
         mp = player.GetComponent<MovePlayer>();
         theText = GetComponent<Text>();
-        myVoice = GetComponentInParent<AudioSource>();
 
         if (textLines.Length == 0)
         {
             textLines = (theText.text.Split('\n'));
-
         }
 
         if (endAtLine == 0)
@@ -76,15 +99,15 @@ public class DialogueText : MonoBehaviour
         while (isTyping && !cancelTyping && (letter < lineOfText.Length - 1))
         {
             theText.text += lineOfText[letter];
+            Speak(lineOfText[letter]);
             letter += 1;
-            Speak();
             yield return new WaitForSeconds(typeSpeed);
         }
         theText.text = lineOfText;
         isTyping = false;
         cancelTyping = false;
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(waitTime);
 
         ProgressLine();
 
@@ -103,11 +126,49 @@ public class DialogueText : MonoBehaviour
         theText.enabled = false;
     }
 
-    public void Speak()
+    //check through our alphabet of sounds and play corresponding character
+    public void Speak(char letter)
     {
-        int randomSound = Random.Range(0, mySounds.Length);
-        myVoice.clip = mySounds[randomSound];
-        myVoice.PlayOneShot(mySounds[randomSound]);
+        //cycle through audioSources for voice
+        if(currentVoice < myVoices.Length - 1)
+        {
+            currentVoice++;
+        }
+        else
+        {
+            currentVoice = 0;
+        }
+
+        //check in letters
+        if (letters.Contains(letter))
+        {
+            int index = letters.IndexOf(letter);
+            myVoices[currentVoice].clip = spokenSounds[index];
+            myVoices[currentVoice].PlayOneShot(spokenSounds[index]);
+            Debug.Log("spoke");
+        }
+        //check in capital letters
+        else if (capitalLetters.Contains(letter))
+        {
+            int index = capitalLetters.IndexOf(letter);
+            myVoices[currentVoice].clip = spokenSounds[index];
+            myVoices[currentVoice].PlayOneShot(spokenSounds[index]);
+            Debug.Log("spoke capital");
+        }
+        //punctuation or other stuff?
+        else
+        {
+            PlaySound();
+            Debug.Log("gibberish");
+        }
+    }
+
+    //to play a sound
+    public void PlaySound()
+    {
+        int randomSound = UnityEngine.Random.Range(0, mySounds.Length);
+        myVoices[currentVoice].clip = mySounds[randomSound];
+        myVoices[currentVoice].PlayOneShot(mySounds[randomSound]);
     }
 }
 

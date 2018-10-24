@@ -158,7 +158,7 @@ public class MovePlayer : MonoBehaviour {
         //bouncing up
         else if(currentCrashPoint == 4)
         {
-
+           
         }
 
         //always move towards next crash point at fallSpeed
