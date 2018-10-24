@@ -9,6 +9,8 @@ TagManager:
   - GridSpot
   - Barren
   - WorldManager
+  - DialogueTrigger
+  - AnimationTrigger
   layers:
   - Default
   - TransparentFX

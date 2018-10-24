@@ -68,15 +68,11 @@ public class MovePlayer : MonoBehaviour {
                         planeSource.UnPause();
                         clock.SetBPM(fastBPM);
                         CharacterSpeeds(50);
-                        DialogueSpeeds(0.0000001f);
+                        DialogueSpeeds(0.00000001f);
                     }
                 }
-
-                //play fast character dialogue ( voice and text)
-                //play fast character animations
-                //set bool audioSpeed true == fast clips on sound producers
-
             }
+
             //stay stopped
             else
             {
@@ -93,13 +89,9 @@ public class MovePlayer : MonoBehaviour {
                         planeSource.Pause();
                         clock.SetBPM(normalBPM);
                         CharacterSpeeds(10);
-                        DialogueSpeeds(0.01f);
+                        DialogueSpeeds(0.005f);
                     }
                 }
-
-                //play normal character dialogue ( voice and text)
-                //play normal character animations
-                //set bool audioSpeed false == slow clips on sound producers
             }
         }
         else
@@ -247,15 +239,5 @@ public class MovePlayer : MonoBehaviour {
     void SetDestination()
     {
         playerNavMove.SetDestination(movementPoints[currentDest].position);
-
-        if (currentDest == 1)
-        {
-            dialogues[0].DisableDialogue();
-            //turn on everything after silva
-            for (int i = 1; i < dialogues.Length; i++)
-            {
-                dialogues[i].EnableDialogue(); 
-            }
-        }
     }
 }
