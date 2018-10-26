@@ -23,7 +23,8 @@ public class MovePlayer : MonoBehaviour {
     SimpleClock clock;
     public float normalBPM, fastBPM;
 
-    public bool hasCrashed, lerpingFOV;
+    public bool hasCrashed, lerpingFOV, increasingFOV;
+    public float desiredFOV;
 
     Camera myCam;
 
@@ -65,6 +66,7 @@ public class MovePlayer : MonoBehaviour {
                     ShipsFall();
                     if (!planeSource.isPlaying)
                     {
+                        LerpFOV(90);
                         planeSource.UnPause();
                         clock.SetBPM(fastBPM);
                         CharacterSpeeds(50);
@@ -86,6 +88,7 @@ public class MovePlayer : MonoBehaviour {
 
                     if (planeSource.isPlaying)
                     {
+                        LerpFOV(60);
                         planeSource.Pause();
                         clock.SetBPM(normalBPM);
                         CharacterSpeeds(10);
@@ -101,15 +104,44 @@ public class MovePlayer : MonoBehaviour {
             SetDestination();
         }
 
+        //lerps fov 
         if (lerpingFOV)
         {
-            myCam.fieldOfView = Mathf.Lerp(myCam.fieldOfView, 100, Time.deltaTime * 5);
-            if(myCam.fieldOfView > 100)
+            myCam.fieldOfView = Mathf.Lerp(myCam.fieldOfView, desiredFOV, Time.deltaTime * 5);
+
+            //when to stop depends on if increasing or decreasing
+            if (increasingFOV)
             {
-                lerpingFOV = false;
+                if (myCam.fieldOfView > desiredFOV - 0.1f)
+                {
+                    lerpingFOV = false;
+                }
             }
+            else
+            {
+                if (myCam.fieldOfView < desiredFOV + 0.1f)
+                {
+                    lerpingFOV = false;
+                }
+            }
+          
         }
 	}
+
+    //called to set cam to specific new fov
+    public void LerpFOV(float fov)
+    {
+        desiredFOV = fov;
+        if(desiredFOV > myCam.fieldOfView)
+        {
+            increasingFOV = true;
+        }
+        else
+        {
+            increasingFOV = false;
+        }
+        lerpingFOV = true;
+    }
 
     void CharacterSpeeds(float speed)
     {
@@ -125,6 +157,12 @@ public class MovePlayer : MonoBehaviour {
         {
             dialogues[i].typeSpeed = speed;
         }
+    }
+
+    //called when player arrives at desired movement point
+    void SetDestination()
+    {
+        playerNavMove.SetDestination(movementPoints[currentDest].position);
     }
 
 
@@ -212,7 +250,7 @@ public class MovePlayer : MonoBehaviour {
             if (currentCrashPoint == 7)
             {
                 hasCrashed = true;
-                lerpingFOV = true;
+                LerpFOV(100);
                 playerNavMove.speed = 30;
                 Time.timeScale = 1;
                 CharacterSpeeds(1);
@@ -235,9 +273,5 @@ public class MovePlayer : MonoBehaviour {
         }
     }
 
-    //called when player arrives at desired movement point
-    void SetDestination()
-    {
-        playerNavMove.SetDestination(movementPoints[currentDest].position);
-    }
+  
 }
