@@ -177,6 +177,7 @@ public class MovePlayer : MonoBehaviour {
         //perhaps lock camera on view of the 9 TVs
         //need more footage and to tune their symmetry with audioSpectrum
         //dig into those post processing effects
+        //play with arrangement and # of tvs in relation to octave banding
     }
 
 
