@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class FactoryGen : MonoBehaviour {
 
-    public Transform terrain, factoryGrid, machineParent;
+    public Transform terrain, factoryGrid, screenParent;
     public int gridSizeX, gridSizeY;
     GameObject[] grid;
     public GameObject gridSpot;
 
     public List<GameObject> machines = new List<GameObject>();
-    public GameObject[] machineTypes;
+    public GameObject[] screenTypes;
 
     //set to adjust grid to terrain world pos
     public Vector3 gridOffset;
@@ -38,10 +38,10 @@ public class FactoryGen : MonoBehaviour {
 
         factoryGrid.transform.localPosition = gridOffset;
 
-        GenerateMachines();
+        GenerateScreens();
     }
 
-    void GenerateMachines()
+    void GenerateScreens()
     {
         for (int i = 0; i < grid.Length; i++)
         {
@@ -62,14 +62,15 @@ public class FactoryGen : MonoBehaviour {
             if (canGenerate)
             {
                 //generate random machine type
-                int randomTree = Random.Range(0, machineTypes.Length);
-                GameObject machineClone = Instantiate(machineTypes[randomTree], grid[i].transform.position, Quaternion.identity, machineParent);
+                int randomScreen = Random.Range(0, screenTypes.Length);
+                GameObject machineClone = Instantiate(screenTypes[randomScreen], grid[i].transform.position, Quaternion.identity, screenParent);
                 machines.Add(machineClone);
 
                 //alter the scale
                 float randomScaleX = Random.Range(0.5f, 2f);
                 float randomScaleY = Random.Range(0.5f, 2f);
                 float randomScaleZ = Random.Range(0.5f, 2f);
+
                 machineClone.transform.localScale = new Vector3(machineClone.transform.localScale.x * randomScaleX,
                     machineClone.transform.localScale.y * randomScaleY, machineClone.transform.localScale.z * randomScaleZ);
 

@@ -6,7 +6,7 @@ public class Door : MonoBehaviour
 {
     GameObject player;
 
-    public float currentDistance, openDistance, openDistanceOut, openDistanceIn;
+    public float currentDistance, openDistance;
 
     public bool open;
 
@@ -26,35 +26,27 @@ public class Door : MonoBehaviour
     {
         currentDistance = Vector3.Distance(player.transform.position, transform.position);
 
-        //checks whether player is inside or outside the door using z pos
-        if(player.transform.position.z < transform.position.z)
-        {
-            openDistance = openDistanceOut; 
-        }
-        else
-        {
-            openDistance = openDistanceIn;
-        }
-
         //if player is near, set door to open and play a sound
-        if (currentDistance < openDistance)
+        if (!open)
         {
-            doorAnimator.SetBool("open", true);
-            if (!open)
+            if (currentDistance < openDistance)
             {
+                doorAnimator.SetBool("open", true);
                 open = true;
                 PlaySound(doorOpen);
             }
         }
+       
         //if player has walked away, set door to close and play a sound
-        else if (currentDistance > (openDistance + 1))
+        else if (open)
         {
-            doorAnimator.SetBool("open", false);
-            if (open)
+            if(currentDistance > openDistance + 5)
             {
+                doorAnimator.SetBool("open", false);
                 open = false;
                 PlaySound(doorClose);
             }
+          
         }
     }
 

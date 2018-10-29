@@ -11,6 +11,8 @@ TagManager:
   - WorldManager
   - DialogueTrigger
   - AnimationTrigger
+  - VideoProducer
+  - ScreenWall
   layers:
   - Default
   - TransparentFX

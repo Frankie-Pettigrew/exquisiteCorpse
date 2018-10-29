@@ -10,7 +10,7 @@ public class MovePlayer : MonoBehaviour {
     public Transform movementPointHolder;
     public Transform[] movementPoints, crashPoints;
 
-    public int currentDest = 0, currentCrashPoint = 0;
+    public int currentDest = 0, finishDest, currentCrashPoint = 0;
 
     public GameObject airship, crashingSmokes;
     public float moveSpeed, fallSpeed, crashSpeed;
@@ -24,7 +24,7 @@ public class MovePlayer : MonoBehaviour {
     public float normalBPM, fastBPM;
 
     public bool hasCrashed, lerpingFOV, increasingFOV;
-    public float desiredFOV;
+    public float desiredFOV, lerpSpeed;
 
     Camera myCam;
 
@@ -41,6 +41,7 @@ public class MovePlayer : MonoBehaviour {
         {
             movementPoints[i] = movementPointHolder.transform.GetChild(i);
         }
+        finishDest = movementPoints.Length - 1;
 
         playerNavMove = GetComponent<NavMeshAgent>();
         planeSource = airship.GetComponent<AudioSource>();
@@ -66,7 +67,7 @@ public class MovePlayer : MonoBehaviour {
                     ShipsFall();
                     if (!planeSource.isPlaying)
                     {
-                        LerpFOV(90);
+                        LerpFOV(90, 5);
                         planeSource.UnPause();
                         clock.SetBPM(fastBPM);
                         CharacterSpeeds(50);
@@ -88,7 +89,7 @@ public class MovePlayer : MonoBehaviour {
 
                     if (planeSource.isPlaying)
                     {
-                        LerpFOV(60);
+                        LerpFOV(60, 5);
                         planeSource.Pause();
                         clock.SetBPM(normalBPM);
                         CharacterSpeeds(10);
@@ -99,15 +100,17 @@ public class MovePlayer : MonoBehaviour {
         }
         else
         {
-            Debug.Log("got set!");
-            currentDest++;
-            SetDestination();
+            if(currentDest < finishDest)
+            {
+                currentDest++;
+                SetDestination();
+            }
         }
 
         //lerps fov 
         if (lerpingFOV)
         {
-            myCam.fieldOfView = Mathf.Lerp(myCam.fieldOfView, desiredFOV, Time.deltaTime * 5);
+            myCam.fieldOfView = Mathf.Lerp(myCam.fieldOfView, desiredFOV, Time.deltaTime * lerpSpeed);
 
             //when to stop depends on if increasing or decreasing
             if (increasingFOV)
@@ -129,7 +132,7 @@ public class MovePlayer : MonoBehaviour {
 	}
 
     //called to set cam to specific new fov
-    public void LerpFOV(float fov)
+    public void LerpFOV(float fov, float speed)
     {
         desiredFOV = fov;
         if(desiredFOV > myCam.fieldOfView)
@@ -140,6 +143,7 @@ public class MovePlayer : MonoBehaviour {
         {
             increasingFOV = false;
         }
+        lerpSpeed = speed;
         lerpingFOV = true;
     }
 
@@ -163,6 +167,16 @@ public class MovePlayer : MonoBehaviour {
     void SetDestination()
     {
         playerNavMove.SetDestination(movementPoints[currentDest].position);
+
+        if(currentDest == finishDest)
+        {
+            LerpFOV(65, 1);
+        }
+
+        //when you arrive at the center of the factory room, start cinema
+        //perhaps lock camera on view of the 9 TVs
+        //need more footage and to tune their symmetry with audioSpectrum
+        //dig into those post processing effects
     }
 
 
@@ -250,7 +264,7 @@ public class MovePlayer : MonoBehaviour {
             if (currentCrashPoint == 7)
             {
                 hasCrashed = true;
-                LerpFOV(100);
+                LerpFOV(70, 3);
                 playerNavMove.speed = 30;
                 Time.timeScale = 1;
                 CharacterSpeeds(1);

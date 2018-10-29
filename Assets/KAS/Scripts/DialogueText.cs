@@ -145,7 +145,7 @@ public class DialogueText : MonoBehaviour
             int index = letters.IndexOf(letter);
             myVoices[currentVoice].clip = spokenSounds[index];
             myVoices[currentVoice].PlayOneShot(spokenSounds[index]);
-            Debug.Log("spoke");
+
         }
         //check in capital letters
         else if (capitalLetters.Contains(letter))
@@ -153,13 +153,13 @@ public class DialogueText : MonoBehaviour
             int index = capitalLetters.IndexOf(letter);
             myVoices[currentVoice].clip = spokenSounds[index];
             myVoices[currentVoice].PlayOneShot(spokenSounds[index]);
-            Debug.Log("spoke capital");
+
         }
         //punctuation or other stuff?
         else
         {
             PlaySound();
-            Debug.Log("gibberish");
+  
         }
     }
 
