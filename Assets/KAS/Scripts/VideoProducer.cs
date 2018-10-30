@@ -11,6 +11,7 @@ public class VideoProducer : MonoBehaviour {
     //array of video clips (these will be different for different prefabs)
 
     AudioSpectrum spectrum;
+    VideoClipList vidList;
 
     public int octaveBand;
     
@@ -18,7 +19,7 @@ public class VideoProducer : MonoBehaviour {
 
     private VideoPlayer vidPlayer;
 
-    public VideoClip[] myClips;
+    public List<VideoClip> myClips = new List<VideoClip>();
 
     public bool inOrOut;
 
@@ -27,9 +28,16 @@ public class VideoProducer : MonoBehaviour {
 
     public int direction;
 
+    public float shiftSpeed;
+
+    AudioSource screenAudio;
+    //public AudioClip[] staticBuzzes;
+
     void Start () {
         vidPlayer = GetComponent<VideoPlayer>();
         spectrum = GameObject.FindGameObjectWithTag("ScreenWall").GetComponent<AudioSpectrum>();
+        vidList = spectrum.GetComponent<VideoClipList>();
+        screenAudio = GetComponent<AudioSource>();
         Random.InitState(System.DateTime.Now.Millisecond);
         ChangeVidClip();
     }
@@ -37,6 +45,17 @@ public class VideoProducer : MonoBehaviour {
     void Update () {
         CompareLevels();
         SwitchScreenDepth();
+
+        if (!vidPlayer.isPlaying)
+        {
+            if (!screenAudio.isPlaying)
+                screenAudio.Play();
+        }
+        else
+        {
+            if(screenAudio.isPlaying)
+                screenAudio.Stop();
+        }
 	}
     
     void SwitchScreenDepth()
@@ -47,35 +66,35 @@ public class VideoProducer : MonoBehaviour {
             case 0:
                 if (inOrOut && transform.localPosition.z < 64f)
                 {
-                    transform.Translate(0, 0, spectrum.MeanLevels[octaveBand] / 2);
+                    transform.Translate(0, 0, spectrum.MeanLevels[octaveBand] * Time.deltaTime * shiftSpeed) ;
                 }
                 else if (!inOrOut && transform.localPosition.z > -24f)
                 {
-                    transform.Translate(0, 0, -spectrum.MeanLevels[octaveBand] / 2);
+                    transform.Translate(0, 0, -spectrum.MeanLevels[octaveBand] * Time.deltaTime * shiftSpeed);
                 }
                 break;
-            //left
-            case 1:
-                if (inOrOut && transform.localPosition.z < 121f)
-                {
-                    transform.Translate(0, 0, spectrum.MeanLevels[octaveBand] / 2);
-                }
-                else if (!inOrOut && transform.localPosition.z > 30f)
-                {
-                    transform.Translate(0, 0, -spectrum.MeanLevels[octaveBand] / 2);
-                }
-                break;
-            //right
-            case 2:
-                if (inOrOut && transform.localPosition.z < 88f)
-                {
-                    transform.Translate(0, 0, spectrum.MeanLevels[octaveBand] / 2);
-                }
-                else if (!inOrOut && transform.localPosition.z > -8f)
-                {
-                    transform.Translate(0, 0, -spectrum.MeanLevels[octaveBand] / 2);
-                }
-                break;
+            ////left
+            //case 1:
+            //    if (inOrOut && transform.localPosition.z < 121f)
+            //    {
+            //        transform.Translate(0, 0, spectrum.MeanLevels[octaveBand] / 2);
+            //    }
+            //    else if (!inOrOut && transform.localPosition.z > 30f)
+            //    {
+            //        transform.Translate(0, 0, -spectrum.MeanLevels[octaveBand] / 2);
+            //    }
+            //    break;
+            ////right
+            //case 2:
+            //    if (inOrOut && transform.localPosition.z < 88f)
+            //    {
+            //        transform.Translate(0, 0, spectrum.MeanLevels[octaveBand] / 2);
+            //    }
+            //    else if (!inOrOut && transform.localPosition.z > -8f)
+            //    {
+            //        transform.Translate(0, 0, -spectrum.MeanLevels[octaveBand] / 2);
+            //    }
+            //    break;
         }
        
     }
@@ -106,13 +125,40 @@ public class VideoProducer : MonoBehaviour {
     //call this to change the clip
     public void ChangeVidClip()
     {
-        int randomClip = Random.Range(0, myClips.Length);
-        vidPlayer.clip = myClips[randomClip];
-        vidPlayer.Play();
-        inOrOut = !inOrOut;
-        resetTimer = Random.Range(1f, 10f);
-        hasReset = true;
-        Debug.Log("changed");
+        int randomClip = Random.Range(0, myClips.Count);
+
+        //rerun until we find a clip that isn't being used
+        if (vidList.clipsBeingUsed[randomClip])
+        {
+            ChangeVidClip();
+        }
+        //clip is not being used, so we switch it
+        else
+        {
+            //uncheck last clip being used
+            int index = myClips.IndexOf(vidPlayer.clip);
+            vidList.clipsBeingUsed[index] = false;
+
+            //set new clip and check it as being used
+            vidPlayer.clip = myClips[randomClip];
+            vidList.clipsBeingUsed[randomClip] = true;
+
+            //play clip, switch depth movement
+            vidPlayer.Play();
+            inOrOut = !inOrOut;
+            resetTimer = Random.Range(0.5f, 5f);
+            hasReset = true;
+
+            //PlayStatic();
+            Debug.Log("changed");
+        }
+        
     }
+
+    //void PlayStatic()
+    //{
+    //    int randomStatic = Random.Range(0, staticBuzzes.Length);
+    //    screenAudio.PlayOneShot(staticBuzzes[randomStatic]);
+    //}
     
 }

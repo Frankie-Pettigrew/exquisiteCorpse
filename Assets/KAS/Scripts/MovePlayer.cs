@@ -171,7 +171,12 @@ public class MovePlayer : MonoBehaviour {
         if(currentDest == finishDest)
         {
             LerpFOV(65, 1);
+            myCam.GetComponent<camMouseLook>().isActive = false;
+            transform.localEulerAngles = new Vector3(0, -135, 0);
+            myCam.transform.localEulerAngles = new Vector3(-25, 0, 0);
         }
+
+       
 
         //when you arrive at the center of the factory room, start cinema
         //perhaps lock camera on view of the 9 TVs
@@ -265,7 +270,7 @@ public class MovePlayer : MonoBehaviour {
             if (currentCrashPoint == 7)
             {
                 hasCrashed = true;
-                LerpFOV(70, 3);
+                LerpFOV(100, 3);
                 playerNavMove.speed = 30;
                 Time.timeScale = 1;
                 CharacterSpeeds(1);
