@@ -173,7 +173,7 @@ public class MovePlayer : MonoBehaviour {
             LerpFOV(65, 1);
             myCam.GetComponent<camMouseLook>().isActive = false;
             transform.localEulerAngles = new Vector3(0, -135, 0);
-            myCam.transform.localEulerAngles = new Vector3(-25, 0, 0);
+            myCam.transform.localEulerAngles = new Vector3(-25, 3.69f, 0);
         }
 
        
