@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/scenes/rick.unity
+  - enabled: 0
+    path: Assets/RICK SAYS 'DO NOT OPEN'/scenes/rick.unity
     guid: 48c530d56e0d21a4d8c972ac149cd331
-  - enabled: 1
-    path: Assets/scenes/frankie.unity
+  - enabled: 0
+    path: Assets/FRANKIE'S SHIT/frankie.unity
     guid: b57af9ce006171a40bf36b80c7037860
+  - enabled: 1
+    path: Assets/KAS/Scenes/the pilot.unity
+    guid: 8588074fe7d305444a69cc3d41a68a81
