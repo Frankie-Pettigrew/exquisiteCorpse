@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.7332542, g: 0.7660781, b: 0.21865049, a: 1}
+  m_IndirectSpecularColor: {r: 0.7328615, g: 0.7644563, b: 0.21802995, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -13431,9 +13431,9 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 44
+  Priority: 0
   DopplerLevel: 0
-  MinDistance: 100
+  MinDistance: 25
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0

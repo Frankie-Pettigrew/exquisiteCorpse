@@ -2561,7 +2561,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a25b00523018965458f061ce72cf497b, type: 3}
   - {fileID: 8300000, guid: 03a3a02b4e0ede54c828918daf395005, type: 3}
   - {fileID: 8300000, guid: 03a3a02b4e0ede54c828918daf395005, type: 3}
-  - {fileID: 8300000, guid: 03a3a02b4e0ede54c828918daf395005, type: 3}
   beatSource: {fileID: 0}
   playedAudio: 0
   showRhythm: 0
