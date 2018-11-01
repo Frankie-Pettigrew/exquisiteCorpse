@@ -6,6 +6,13 @@ TagManager:
   tags:
   - MovePoint
   - SimpleClock
+  - GridSpot
+  - Barren
+  - WorldManager
+  - DialogueTrigger
+  - AnimationTrigger
+  - VideoProducer
+  - ScreenWall
   layers:
   - Default
   - TransparentFX

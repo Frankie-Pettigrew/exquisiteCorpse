@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 198340249821222064}
   - component: {fileID: 199145591024181648}
   - component: {fileID: 114106096051352450}
+  - component: {fileID: 114857786339820542}
   m_Layer: 0
   m_Name: crashingSmoke
   m_TagString: Untagged
@@ -60,6 +61,18 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 987f00197703b4f4a8635fcf73c4327a, type: 2}
   - {fileID: 2100000, guid: 3dba91becbe3acc488d97cc6e2e332c0, type: 2}
   - {fileID: 2100000, guid: 0f4cdd56f469c1a459fa748d62655092, type: 2}
+--- !u!114 &114857786339820542
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1833926567734050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26829f0cbb751eb47aff583d64386d6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waitTime: 10
 --- !u!198 &198340249821222064
 ParticleSystem:
   m_ObjectHideFlags: 1

@@ -5,11 +5,12 @@ using UnityEngine.AI;
 
 public class MovePlayer : MonoBehaviour {
 
-    NavMeshAgent playerNavMove;
+    public NavMeshAgent playerNavMove;
 
+    public Transform movementPointHolder;
     public Transform[] movementPoints, crashPoints;
 
-    public int currentDest = 0, currentCrashPoint = 0;
+    public int currentDest = 0, finishDest, currentCrashPoint = 0;
 
     public GameObject airship, crashingSmokes;
     public float moveSpeed, fallSpeed, crashSpeed;
@@ -22,14 +23,26 @@ public class MovePlayer : MonoBehaviour {
     SimpleClock clock;
     public float normalBPM, fastBPM;
 
-    public bool hasCrashed, lerpingFOV;
+    public bool hasCrashed, lerpingFOV, increasingFOV;
+    public float desiredFOV, lerpSpeed;
 
     Camera myCam;
+
+    public Animator[] characters;
+    public DialogueText[] dialogues;
 
     //going to need to work diligently on getting character animations, dialogue and character sounds right based on timescale
     //look at deathChess for help typing out the strings one by one
 
 	void Start () {
+        //set our movement points
+        movementPoints = new Transform[movementPointHolder.childCount];
+        for (int i =0; i < movementPointHolder.childCount; i++)
+        {
+            movementPoints[i] = movementPointHolder.transform.GetChild(i);
+        }
+        finishDest = movementPoints.Length - 1;
+
         playerNavMove = GetComponent<NavMeshAgent>();
         planeSource = airship.GetComponent<AudioSource>();
         planeSource.Play();
@@ -41,7 +54,7 @@ public class MovePlayer : MonoBehaviour {
 	
 	void Update () {
 
-        if(Vector3.Distance(transform.position, movementPoints[currentDest].position) > 3f)
+        if(Vector3.Distance(transform.position, movementPoints[currentDest].position) > 10f)
         {
             //move when mouse down
             if (Input.GetMouseButton(0))
@@ -54,54 +67,123 @@ public class MovePlayer : MonoBehaviour {
                     ShipsFall();
                     if (!planeSource.isPlaying)
                     {
+                        LerpFOV(90, 5);
                         planeSource.UnPause();
                         clock.SetBPM(fastBPM);
+                        CharacterSpeeds(50);
+                        DialogueSpeeds(0.00000001f);
                     }
                 }
-
-                //play fast character dialogue ( voice and text)
-                //play fast character animations
-                //set bool audioSpeed true == fast clips on sound producers
-
             }
+
             //stay stopped
             else
             {
                 playerNavMove.isStopped = true;
-
-               
-
+                
                 if (!hasCrashed)
                 {
+                  
                     Time.timeScale = 0.1f;
+                    
 
                     if (planeSource.isPlaying)
                     {
+                        LerpFOV(60, 5);
                         planeSource.Pause();
                         clock.SetBPM(normalBPM);
+                        CharacterSpeeds(10);
+                        DialogueSpeeds(0.005f);
                     }
                 }
-
-                //play normal character dialogue ( voice and text)
-                //play normal character animations
-                //set bool audioSpeed false == slow clips on sound producers
             }
         }
         else
         {
-            currentDest++;
-            SetDestination();
-        }
-
-        if (lerpingFOV)
-        {
-            myCam.fieldOfView = Mathf.Lerp(myCam.fieldOfView, 100, Time.deltaTime * 5);
-            if(myCam.fieldOfView > 100)
+            if(currentDest < finishDest)
             {
-                lerpingFOV = false;
+                currentDest++;
+                SetDestination();
             }
         }
+
+        //lerps fov 
+        if (lerpingFOV)
+        {
+            myCam.fieldOfView = Mathf.Lerp(myCam.fieldOfView, desiredFOV, Time.deltaTime * lerpSpeed);
+
+            //when to stop depends on if increasing or decreasing
+            if (increasingFOV)
+            {
+                if (myCam.fieldOfView > desiredFOV - 0.1f)
+                {
+                    lerpingFOV = false;
+                }
+            }
+            else
+            {
+                if (myCam.fieldOfView < desiredFOV + 0.1f)
+                {
+                    lerpingFOV = false;
+                }
+            }
+          
+        }
 	}
+
+    //called to set cam to specific new fov
+    public void LerpFOV(float fov, float speed)
+    {
+        desiredFOV = fov;
+        if(desiredFOV > myCam.fieldOfView)
+        {
+            increasingFOV = true;
+        }
+        else
+        {
+            increasingFOV = false;
+        }
+        lerpSpeed = speed;
+        lerpingFOV = true;
+    }
+
+    void CharacterSpeeds(float speed)
+    {
+        for(int i = 0; i < characters.Length; i++)
+        {
+            characters[i].speed = speed;
+        }
+    }
+
+    void DialogueSpeeds(float speed)
+    {
+        for (int i = 0; i < dialogues.Length; i++)
+        {
+            dialogues[i].typeSpeed = speed;
+        }
+    }
+
+    //called when player arrives at desired movement point
+    void SetDestination()
+    {
+        playerNavMove.SetDestination(movementPoints[currentDest].position);
+
+        if(currentDest == finishDest)
+        {
+            LerpFOV(65, 1);
+            myCam.GetComponent<camMouseLook>().isActive = false;
+            transform.localEulerAngles = new Vector3(0, -135, 0);
+            myCam.transform.localEulerAngles = new Vector3(-25, 3.69f, 0);
+        }
+
+       
+
+        //when you arrive at the center of the factory room, start cinema
+        //perhaps lock camera on view of the 9 TVs
+        //need more footage and to tune their symmetry with audioSpectrum
+        //dig into those post processing effects
+        //play with arrangement and # of tvs in relation to octave banding
+    }
 
 
     //called only while player is moving
@@ -134,7 +216,7 @@ public class MovePlayer : MonoBehaviour {
         //bouncing up
         else if(currentCrashPoint == 4)
         {
-
+           
         }
 
         //always move towards next crash point at fallSpeed
@@ -188,9 +270,10 @@ public class MovePlayer : MonoBehaviour {
             if (currentCrashPoint == 7)
             {
                 hasCrashed = true;
-                lerpingFOV = true;
+                LerpFOV(100, 3);
                 playerNavMove.speed = 30;
                 Time.timeScale = 1;
+                CharacterSpeeds(1);
             }
         }
 
@@ -201,13 +284,14 @@ public class MovePlayer : MonoBehaviour {
         {
             GameObject smokeClone = Instantiate(crashingSmokes, airship.transform.position, Quaternion.identity);
 
+            if(currentCrashPoint < 5)
+            {
+                smokeClone.GetComponent<WaitToDestroy>().destroy = true;
+            }
+
             smokeSpawnTimer = smokeSpawnTotal;
         }
     }
 
-    //called when player arrives at desired movement point
-    void SetDestination()
-    {
-        playerNavMove.SetDestination(movementPoints[currentDest].position);
-    }
+  
 }

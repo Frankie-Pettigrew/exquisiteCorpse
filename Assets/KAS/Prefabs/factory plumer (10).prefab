@@ -2018,7 +2018,8 @@ AudioSource:
   m_GameObject: {fileID: 1576833467845880}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243016249123920764, guid: 55c4f4a625464415fb025593f621251f,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -2194,12 +2195,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b3f308f17f1167a46935a6972bb5a1c5, type: 3}
   - {fileID: 8300000, guid: a2783d08c9a1abe4d8f6d1ee99f75097, type: 3}
   - {fileID: 8300000, guid: c7dd6e0af0bdde743a6d02689c8519d3, type: 3}
-  - {fileID: 8300000, guid: 33fec19ef48d0e54aafe90b02ad2d404, type: 3}
   - {fileID: 8300000, guid: cedb4d8f7145ff64fb4f5f2e32781ab5, type: 3}
   - {fileID: 8300000, guid: 5648a5c334d2b6e49b2e1c047d958446, type: 3}
-  - {fileID: 8300000, guid: 9ebdfcba467082740837a84af249632b, type: 3}
   - {fileID: 8300000, guid: 589b3dda01fee814a8e9b3e222bfbf7b, type: 3}
   - {fileID: 8300000, guid: b6f03f1869248c645ae35ce3433a1c8a, type: 3}
+  - {fileID: 8300000, guid: 9ebdfcba467082740837a84af249632b, type: 3}
   beatSource: {fileID: 0}
   playedAudio: 0
   showRhythm: 0
