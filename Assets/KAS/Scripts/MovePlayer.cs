@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.PostProcessing;
 
 public class MovePlayer : MonoBehaviour {
 
@@ -31,10 +32,16 @@ public class MovePlayer : MonoBehaviour {
     public Animator[] characters;
     public DialogueText[] dialogues;
 
-    //going to need to work diligently on getting character animations, dialogue and character sounds right based on timescale
-    //look at deathChess for help typing out the strings one by one
+    //post processing profiler references
+    public PostProcessingProfile myPost;    public ColorGradingModel.Settings colorGrader;
+    public bool staticDeath;
+    public float staticFallSpeed = 3f;
+    
 
-	void Start () {
+    void Start () {
+        //pp stuff
+        colorGrader = myPost.colorGrading.settings;        colorGrader.basic.hueShift = 0;        myPost.colorGrading.settings = colorGrader;
+
         //set our movement points
         movementPoints = new Transform[movementPointHolder.childCount];
         for (int i =0; i < movementPointHolder.childCount; i++)
@@ -96,6 +103,11 @@ public class MovePlayer : MonoBehaviour {
                         DialogueSpeeds(0.005f);
                     }
                 }
+                else
+                {
+                    CharacterSpeeds(10);
+                    DialogueSpeeds(0.005f);
+                }
             }
         }
         else
@@ -105,6 +117,12 @@ public class MovePlayer : MonoBehaviour {
                 currentDest++;
                 SetDestination();
             }
+        }
+
+        if (staticDeath)
+        {
+            staticFallSpeed += 0.5f;
+            transform.Translate(0, -staticFallSpeed, 0);
         }
 
         //lerps fov 

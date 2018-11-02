@@ -4,22 +4,25 @@ using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.UI;
 
-public class VideoProducer : MonoBehaviour {
+public class VideoProducer : MonoBehaviour
+{
 
     //movement of screens back and forth
     //change the screens footage in relation to volume of x frequency range
     //array of video clips (these will be different for different prefabs)
-
+    MovePlayer mp;
     AudioSpectrum spectrum;
     VideoClipList vidList;
 
     public int octaveBand;
-    
+
     public float levelMin;
 
     private VideoPlayer vidPlayer;
 
-    public List<VideoClip> myClips = new List<VideoClip>();
+    public List<VideoClip> naturalDisasters = new List<VideoClip>();
+    //public List<VideoClip> spaceTravel = new List<VideoClip>();
+    public bool staticDeath;
 
     public bool inOrOut;
 
@@ -31,20 +34,28 @@ public class VideoProducer : MonoBehaviour {
     public float shiftSpeed;
 
     AudioSource screenAudio;
-    //public AudioClip[] staticBuzzes;
 
-    void Start () {
+
+    void Start()
+    {
         vidPlayer = GetComponent<VideoPlayer>();
         spectrum = GameObject.FindGameObjectWithTag("ScreenWall").GetComponent<AudioSpectrum>();
         vidList = spectrum.GetComponent<VideoClipList>();
         screenAudio = GetComponent<AudioSource>();
         Random.InitState(System.DateTime.Now.Millisecond);
         ChangeVidClip();
+        StartCoroutine(WaitForStatic());
+        mp = GameObject.FindGameObjectWithTag("Player").GetComponent<MovePlayer>();
     }
-    
-    void Update () {
-        CompareLevels();
-        SwitchScreenDepth();
+
+    void Update()
+    {
+        if (!staticDeath)
+        {
+            CompareLevels();
+            ScreenDepth();
+        }
+
 
         if (!vidPlayer.isPlaying)
         {
@@ -53,52 +64,25 @@ public class VideoProducer : MonoBehaviour {
         }
         else
         {
-            if(screenAudio.isPlaying)
+            if (screenAudio.isPlaying)
                 screenAudio.Stop();
         }
-	}
-    
-    void SwitchScreenDepth()
-    {
-        switch (direction)
-        {
-            //forward
-            case 0:
-                if (inOrOut && transform.localPosition.z < 64f)
-                {
-                    transform.Translate(0, 0, spectrum.MeanLevels[octaveBand] * Time.deltaTime * shiftSpeed) ;
-                }
-                else if (!inOrOut && transform.localPosition.z > -24f)
-                {
-                    transform.Translate(0, 0, -spectrum.MeanLevels[octaveBand] * Time.deltaTime * shiftSpeed);
-                }
-                break;
-            ////left
-            //case 1:
-            //    if (inOrOut && transform.localPosition.z < 121f)
-            //    {
-            //        transform.Translate(0, 0, spectrum.MeanLevels[octaveBand] / 2);
-            //    }
-            //    else if (!inOrOut && transform.localPosition.z > 30f)
-            //    {
-            //        transform.Translate(0, 0, -spectrum.MeanLevels[octaveBand] / 2);
-            //    }
-            //    break;
-            ////right
-            //case 2:
-            //    if (inOrOut && transform.localPosition.z < 88f)
-            //    {
-            //        transform.Translate(0, 0, spectrum.MeanLevels[octaveBand] / 2);
-            //    }
-            //    else if (!inOrOut && transform.localPosition.z > -8f)
-            //    {
-            //        transform.Translate(0, 0, -spectrum.MeanLevels[octaveBand] / 2);
-            //    }
-            //    break;
-        }
-       
     }
 
+    //fluctuates depth of screens
+    void ScreenDepth()
+    {
+        if (inOrOut && transform.localPosition.z < 64f)
+        {
+            transform.Translate(0, 0, spectrum.MeanLevels[octaveBand] * Time.deltaTime * shiftSpeed);
+        }
+        else if (!inOrOut && transform.localPosition.z > -24f)
+        {
+            transform.Translate(0, 0, -spectrum.MeanLevels[octaveBand] * Time.deltaTime * shiftSpeed);
+        }
+    }
+
+    //has countdown and compares levels when necessary, then calls changeVidClip
     void CompareLevels()
     {
         Debug.Log("compared");
@@ -118,14 +102,14 @@ public class VideoProducer : MonoBehaviour {
             {
                 ChangeVidClip();
             }
-            
+
         }
     }
 
     //call this to change the clip
     public void ChangeVidClip()
     {
-        int randomClip = Random.Range(0, myClips.Count);
+        int randomClip = Random.Range(0, naturalDisasters.Count);
 
         //rerun until we find a clip that isn't being used
         if (vidList.clipsBeingUsed[randomClip])
@@ -136,11 +120,11 @@ public class VideoProducer : MonoBehaviour {
         else
         {
             //uncheck last clip being used
-            int index = myClips.IndexOf(vidPlayer.clip);
+            int index = naturalDisasters.IndexOf(vidPlayer.clip);
             vidList.clipsBeingUsed[index] = false;
 
             //set new clip and check it as being used
-            vidPlayer.clip = myClips[randomClip];
+            vidPlayer.clip = naturalDisasters[randomClip];
             vidList.clipsBeingUsed[randomClip] = true;
 
             //play clip, switch depth movement
@@ -152,13 +136,38 @@ public class VideoProducer : MonoBehaviour {
             //PlayStatic();
             Debug.Log("changed");
         }
-        
+
     }
 
-    //void PlayStatic()
+    //called at start
+    //IEnumerator WaitForSpaceShips()
     //{
-    //    int randomStatic = Random.Range(0, staticBuzzes.Length);
-    //    screenAudio.PlayOneShot(staticBuzzes[randomStatic]);
+    //    yield return new WaitForSeconds(70);
+    //    ascension = true;
+
+    //    //reset vidlist
+    //    for(int i = 0; i < vidList.clipsBeingUsed.Count; i++)
+    //    {
+    //        vidList.clipsBeingUsed[i] = false;
+    //    }
+
+    //    StartCoroutine(WaitForStatic());
     //}
-    
+
+    //called after ascension
+    IEnumerator WaitForStatic()
+    {
+        yield return new WaitForSeconds(90);
+        staticDeath = true;
+        vidPlayer.Stop();
+        vidPlayer.clip = null;
+        StartCoroutine(WaitForStaticDeath());
+    }
+
+    IEnumerator WaitForStaticDeath()
+    {
+        yield return new WaitForSeconds(3);
+        mp.staticDeath = true;
+    }
+
 }
