@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class Trigger : MonoBehaviour {
     //general
@@ -28,6 +29,10 @@ public class Trigger : MonoBehaviour {
     //audio to play
     public bool hasAudioToPlay;
     public AudioSource[] sources;
+
+    //scene transition
+    public bool transitionScene;
+    public int sceneIndex;
 
     void OnTriggerEnter(Collider other)
     {
@@ -118,6 +123,11 @@ public class Trigger : MonoBehaviour {
                     {
                         sources[0].Play();
                     }
+                }
+
+                if (transitionScene)
+                {
+                    SceneManager.LoadScene(sceneIndex);
                 }
                 
 
