@@ -33,14 +33,19 @@ public class MovePlayer : MonoBehaviour {
     public DialogueText[] dialogues;
 
     //post processing profiler references
-    public PostProcessingProfile myPost;    public ColorGradingModel.Settings colorGrader;
+    public PostProcessingProfile myPost;
+    public ColorGradingModel.Settings colorGrader;
     public bool staticDeath;
     public float staticFallSpeed = 3f;
     
 
     void Start () {
         //pp stuff
-        colorGrader = myPost.colorGrading.settings;        colorGrader.basic.hueShift = 0;        myPost.colorGrading.settings = colorGrader;
+        colorGrader = myPost.colorGrading.settings;
+
+        colorGrader.basic.hueShift = 0;
+
+        myPost.colorGrading.settings = colorGrader;
 
         //set our movement points
         movementPoints = new Transform[movementPointHolder.childCount];
