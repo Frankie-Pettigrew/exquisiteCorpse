@@ -15,7 +15,7 @@ public class WebCamText : MonoBehaviour
     {
 
         webcamTexture = new WebCamTexture();
-        webcamTexture.requestedFPS = 12;
+        //webcamTexture.requestedFPS = 3;
 
         screenMat.mainTexture = webcamTexture;
         webcamTexture.Play();
@@ -28,24 +28,37 @@ public class WebCamText : MonoBehaviour
     }
 
     int pixelX, pixelY;
+    float pixYFloat;
     // Update is called once per frame
     void Update()
     {
 
-
-        if (webcamTexture.didUpdateThisFrame)// && Random.Range(0, 100) > 95)
-        {
-            //pixelY = Mathf.RoundToInt(Mathf.Sin(Time.time) * 100);
-
-            int offset = Mathf.RoundToInt(((100 - pixelY) / 10) - 5);
-            Debug.Log(offset);
-            pixelY += Random.Range(-2, 2) + offset;
-
-            pixelX = Mathf.RoundToInt(pixelY * 0.6f);
-            screenMat.SetVector("_pixels", new Vector4(pixelX, pixelY));
-        }
+        if (Input.GetKey(KeyCode.Mouse0))
+            Camera.main.transform.position += Vector3.forward * Time.deltaTime * 15;
 
 
-        pixelY = Mathf.Clamp(pixelY, 0, 100);
+        //if (webcamTexture.didUpdateThisFrame)
+        //{
+        //    if (pixelY > 10)
+        //        pixelY = Random.Range(pixelY - 10, pixelY);
+        //    else
+        //        pixelY = Random.Range(5, pixelY);
+
+        //    pixYFloat = pixelY;
+
+        //}
+        //else
+        //{
+        //    pixYFloat += Time.deltaTime * 100;
+        //    pixelY = Mathf.RoundToInt(pixYFloat);
+        //    Debug.Log(pixYFloat);
+        //}
+
+        //pixelY = Mathf.Clamp(pixelY, 0, 150);
+
+        //pixelX = Mathf.RoundToInt(pixelY * 0.6f);
+        //screenMat.SetVector("_pixels", new Vector4(pixelX, pixelY));
+
+
     }
 }
