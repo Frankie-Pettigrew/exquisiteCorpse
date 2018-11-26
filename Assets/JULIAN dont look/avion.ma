@@ -1,6 +1,6 @@
 //Maya ASCII 2016 scene
 //Name: avion.ma
-//Last modified: Wed, Nov 21, 2018 03:55:26 PM
+//Last modified: Wed, Nov 21, 2018 03:59:37 PM
 //Codeset: UTF-8
 requires maya "2016";
 requires "stereoCamera" "10.0";
@@ -14,8 +14,8 @@ fileInfo "license" "student";
 createNode transform -s -n "persp";
 	rename -uid "E0B87CCF-A842-21EC-85A0-1FB4F0F4C0FA";
 	setAttr ".v" no;
-	setAttr ".t" -type "double3" -11.332776702292042 2.2911664320290459 -0.30157508367223684 ;
-	setAttr ".r" -type "double3" -9.3383527508667505 -92.6 360.00000000107639 ;
+	setAttr ".t" -type "double3" 4.4992337294666394 2.8726358592335086 -0.4608058148887002 ;
+	setAttr ".r" -type "double3" -13.538352749582309 93.800000000004943 360.00000000019998 ;
 	setAttr ".rp" -type "double3" 0 -5.2041704279304213e-18 0 ;
 	setAttr ".rpt" -type "double3" 1.2482528884916098e-15 -7.2115858621972985e-16 -5.1804860661247159e-16 ;
 createNode camera -s -n "perspShape" -p "persp";
@@ -988,6 +988,7 @@ createNode mesh -n "bodyShape" -p "body";
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 createNode transform -n "propeller";
 	rename -uid "3B370BD9-8E49-5208-1A95-B7860388D966";
+	setAttr ".t" -type "double3" -0.042661036730288426 0 0 ;
 	setAttr ".s" -type "double3" 1.1420377111065969 1.1420377111065969 1.1420377111065969 ;
 	setAttr ".rp" -type "double3" -3.0453168153762817 0.47878646850585938 0.009372711181640625 ;
 	setAttr ".sp" -type "double3" -3.0453168153762817 0.47878646850585938 0.009372711181640625 ;
@@ -1750,7 +1751,7 @@ createNode deleteComponent -n "deleteComponent1";
 	rename -uid "AE7E1316-3447-7C8D-CEF8-4C9470D42777";
 	setAttr ".dc" -type "componentList" 9 "e[25]" "e[29]" "e[137]" "e[141]" "e[424]" "e[426:428]" "e[430:432]" "e[434:436]" "e[438:439]";
 createNode nodeGraphEditorInfo -n "hyperShadePrimaryNodeEditorSavedTabsInfo";
-	rename -uid "758DD43B-1248-F4E9-7DA6-82847E648842";
+	rename -uid "EA0C9FBC-6844-6957-4195-FCA8EAF6418F";
 	setAttr ".pee" yes;
 	setAttr ".tgi[0].tn" -type "string" "Untitled_1";
 	setAttr ".tgi[0].vl" -type "double2" -457.14283897763283 -310.71427336760985 ;
