@@ -21,6 +21,7 @@ public class JulianWorldMan : MonoBehaviour
         halftoneMat.SetFloat("_colorStrength", 0);
         initText.color = Color.clear;
         c = Camera.main.GetComponent<CamLook>();
+        c.enabled = false;
     }
 
     // Update is called once per frame
@@ -77,11 +78,4 @@ public class JulianWorldMan : MonoBehaviour
 
     }
 
-    /*
-Where did this plane come from? He wondered out loud, rephrasing the question over
-and over. What source animated such deceptive events?
-
-That dream body begins to fly upward and nearly departs, waving goodbye to
-this wretched corpse.
-    */
 }

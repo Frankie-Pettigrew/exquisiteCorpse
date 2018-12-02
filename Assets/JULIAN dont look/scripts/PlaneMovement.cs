@@ -17,31 +17,24 @@ public class PlaneMovement : MonoBehaviour
         Time.timeScale = 1;
 
         rb = GetComponent<Rigidbody>();
-        h.speed = speed * -10000;
 
-        //skyboxColors.SetVector("_scrollSpeed", new Vector4(speed, speed, 0, 0));
+        hue = 0.75f;
     }
 
 
-
-    float refreshTim;
+    float hue;
     void Update()
     {
         Cursor.lockState = CursorLockMode.Locked;
 
         speed += Time.deltaTime * 0.005f;
 
-        //if (refreshTim > 10)
-        //{
-        //skyboxColors.SetVector("_scrollSpeed", new Vector4(speed, speed, 0, 0));
+        hue -= Time.deltaTime * 0.002f;
+        if (hue < 0) hue = 1;
+
+        skyboxColors.SetFloat("_hue", hue);
         speedSphere.localScale = Vector3.one * speed * 2;
-        h.speed = speed * -15000;
-        refreshTim = 0;
-        //}
-        //else
-        //{
-        //    refreshTim += Time.deltaTime;
-        //}
+
 
 
     }
