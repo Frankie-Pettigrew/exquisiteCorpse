@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1.0322455, g: 0.44241467, b: 2.588943, a: 1}
+  m_IndirectSpecularColor: {r: 0.42656845, g: 2.6045668, b: 1.4662523, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -426,7 +426,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4663999680356350, guid: d9d0288edd3d448238f2707aa4447e88, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 53.7
+      value: 54
       objectReference: {fileID: 0}
     - target: {fileID: 4663999680356350, guid: d9d0288edd3d448238f2707aa4447e88, type: 2}
       propertyPath: m_LocalPosition.y
@@ -434,7 +434,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4663999680356350, guid: d9d0288edd3d448238f2707aa4447e88, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -873
+      value: -820
       objectReference: {fileID: 0}
     - target: {fileID: 4663999680356350, guid: d9d0288edd3d448238f2707aa4447e88, type: 2}
       propertyPath: m_LocalRotation.x
@@ -470,6 +470,16 @@ Prefab:
       propertyPath: timeForChute
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 114002202204281756, guid: d9d0288edd3d448238f2707aa4447e88,
+        type: 2}
+      propertyPath: sphere
+      value: 
+      objectReference: {fileID: 116664717}
+    - target: {fileID: 114002202204281756, guid: d9d0288edd3d448238f2707aa4447e88,
+        type: 2}
+      propertyPath: distForChute
+      value: 700
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d9d0288edd3d448238f2707aa4447e88, type: 2}
   m_IsPrefabParent: 0
@@ -490,7 +500,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4663999680356350, guid: d9d0288edd3d448238f2707aa4447e88, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -803.30005
+      value: -798.30005
       objectReference: {fileID: 0}
     - target: {fileID: 4663999680356350, guid: d9d0288edd3d448238f2707aa4447e88, type: 2}
       propertyPath: m_LocalRotation.x
@@ -522,6 +532,16 @@ Prefab:
       propertyPath: timeForChute
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 114002202204281756, guid: d9d0288edd3d448238f2707aa4447e88,
+        type: 2}
+      propertyPath: sphere
+      value: 
+      objectReference: {fileID: 116664717}
+    - target: {fileID: 114002202204281756, guid: d9d0288edd3d448238f2707aa4447e88,
+        type: 2}
+      propertyPath: distForChute
+      value: 800
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d9d0288edd3d448238f2707aa4447e88, type: 2}
   m_IsPrefabParent: 0
@@ -542,7 +562,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4663999680356350, guid: d9d0288edd3d448238f2707aa4447e88, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -733
+      value: -728
       objectReference: {fileID: 0}
     - target: {fileID: 4663999680356350, guid: d9d0288edd3d448238f2707aa4447e88, type: 2}
       propertyPath: m_LocalRotation.x
@@ -573,6 +593,16 @@ Prefab:
         type: 2}
       propertyPath: timeForChute
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114002202204281756, guid: d9d0288edd3d448238f2707aa4447e88,
+        type: 2}
+      propertyPath: sphere
+      value: 
+      objectReference: {fileID: 116664717}
+    - target: {fileID: 114002202204281756, guid: d9d0288edd3d448238f2707aa4447e88,
+        type: 2}
+      propertyPath: distForChute
+      value: 650
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d9d0288edd3d448238f2707aa4447e88, type: 2}
@@ -1000,7 +1030,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 514548246}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f5ec70bf363c497f9d221268ed80b8f, type: 3}
   m_Name: 

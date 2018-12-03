@@ -7,7 +7,7 @@ public class OtherPlanes : MonoBehaviour
 
     public PlaneMovement mainPlane;
     Rigidbody rb;
-    public Transform pChute;
+    public Transform pChute, sphere;
 
     // Use this for initialization
     void Start()
@@ -23,19 +23,21 @@ public class OtherPlanes : MonoBehaviour
         else
         {
             tim = 0;
-            randomSpeedOffset = Random.Range(0.6f, 1.4f);
+            randomSpeedOffset = Random.Range(0.9f, 1.2f);
         }
 
         rb.MovePosition(transform.position + transform.right * mainPlane.speed * randomSpeedOffset);
 
     }
     float pchuteTim;
-    public float timeForChute;
+    public float distForChute;
+    bool doChute;
     void Update()
     {
-        if (pchuteTim < timeForChute)
-            pchuteTim += Time.deltaTime;
-        else
+        if (Vector3.Distance(transform.position, sphere.position) < distForChute)
+            doChute = true;
+
+        if (doChute)
             DoParachute();
     }
 
