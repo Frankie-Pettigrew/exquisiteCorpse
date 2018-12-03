@@ -5,12 +5,15 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
 
-    public Transform parachuteHandle;
+    public Transform parachuteHandle, actualParachute, plane;
     float lerpVal;
+
+    public Material halftoneMat;
     // Use this for initialization
     void Start()
     {
-
+        halftoneMat.SetFloat("_greyscale", 1);
+        halftoneMat.SetFloat("_frequency", freqMat);
     }
     float tim;
     bool activatedHandle, activatedParachute;
@@ -30,7 +33,7 @@ public class PlayerControl : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Mouse0))
             {
-                if (lerpVal < 0.6f)
+                if (lerpVal < 0.8f)
                     lerpVal += Time.deltaTime * 0.2f;
                 else
                 {
@@ -57,14 +60,74 @@ public class PlayerControl : MonoBehaviour
                 else
                 {
                     activatedParachute = true;
+
                 }
             }
         }
         parachuteHandle.localEulerAngles = new Vector3(Mathf.Lerp(0, 60, lerpVal), 0, 0);
-    }
 
+        halftoneMat.SetFloat("_greyscale", 1 - lerpVal);
+
+        if (activatedParachute)
+            lerpVal = 0;
+    }
+    bool deployedPchute, hasCStrength;
+    float freqMat = 200, cStrength;
     void DoParachute()
     {
+        if (!hasCStrength)
+        {
+            cStrength = halftoneMat.GetFloat("_colorStrength");
+            hasCStrength = true;
+        }
+
+        if (!deployedPchute)
+        {
+            if (lerpVal < 1)
+                lerpVal += Time.deltaTime;
+            else
+            {
+                deployedPchute = true;
+            }
+            actualParachute.localPosition = new Vector3(0, Mathf.SmoothStep(-2, 6, lerpVal), 0);
+            actualParachute.localScale = Vector3.Lerp(Vector3.zero, Vector3.one * 2, lerpVal);
+
+            if (deployedPchute)
+                lerpVal = 0;
+        }
+        else
+        {
+            transform.parent = null;
+            transform.position += Vector3.up * Time.deltaTime * 8;
+            if (plane.eulerAngles.x < 80)
+                plane.eulerAngles += Vector3.right * Time.deltaTime * 10;
+
+            if (Input.GetKey(KeyCode.Mouse0))
+            {
+                if (freqMat > 0.01f)
+                {
+                    freqMat = Mathf.Lerp(freqMat, 0, Time.deltaTime);
+
+                    halftoneMat.SetFloat("_frequency", freqMat);
+                }
+                else
+                {
+                    //set timer here in case people dont click till the end
+                    if (cStrength > 0.45f)
+                    {
+                        cStrength -= Time.deltaTime * 0.2f;
+                        halftoneMat.SetFloat("_colorStrength", cStrength);
+                    }
+                    else
+                    {
+                        Debug.Log("reached ending");
+                    }
+
+                }
+            }
+        }
+
+
 
     }
 }

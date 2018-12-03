@@ -41,9 +41,7 @@ public class PlaneMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-
-
-        rb.MovePosition(transform.position + Vector3.forward * speed);
+        rb.MovePosition(transform.position + transform.forward * speed);
 
 
     }

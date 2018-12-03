@@ -36,7 +36,7 @@ Material:
     - _effectStrength: 1
     - _frequency: 200
     - _greyScaleStrength: 1
-    - _greyscale: 1
+    - _greyscale: -0.017190814
     - _kStrength: 1.5
     - _mStrength: 1.5
     - _paper_like: 1
