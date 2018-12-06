@@ -37,23 +37,31 @@ public class CamLook : MonoBehaviour
 
         upDownLook = Mathf.Lerp(upDownLook, 0, slowDownSpeedLook * udDampOffset);
 
-
         //LEFTRIGHT:
         lrLook += mouseX * lookSpeed;
 
+
         float lrDampOffset = 1;
-        if ((camRot.y > 125 && lrLook > 0) || (camRot.y < -125 && lrLook < 0))//soft clamp
-            lrDampOffset = 8;
+        if (transform.parent.parent != null)
+        {
+            if ((camRot.y > 125 && lrLook > 0) || (camRot.y < -125 && lrLook < 0))//soft clamp
+                lrDampOffset = 8;
+        }
 
         lrLook = Mathf.Lerp(lrLook, 0, slowDownSpeedLook * lrDampOffset);
 
 
         camRot += new Vector3(-upDownLook, lrLook, 0);
 
-
         //final strong clamp just in case
+        if (transform.parent.parent != null)
+        {
+
+            camRot.y = Mathf.Clamp(camRot.y, -140, 140);
+        }
         camRot.x = Mathf.Clamp(camRot.x, -85, 65);
-        camRot.y = Mathf.Clamp(camRot.y, -140, 140);
+
+
 
         transform.localEulerAngles = camRot;
 

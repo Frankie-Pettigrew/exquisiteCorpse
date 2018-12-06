@@ -1,11 +1,12 @@
 ﻿<Properties StartupConfiguration="{6C02B71B-0184-E60B-7D2B-C4B3062B8654}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/JULIAN dont look/scripts/JulianWorldMan.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/JULIAN dont look/scripts/GroundObject.cs">
     <Files>
       <File FileName="Assets/JULIAN dont look/scripts/PlaneMovement.cs" Line="43" Column="6" />
-      <File FileName="Assets/JULIAN dont look/scripts/JulianWorldMan.cs" Line="24" Column="27" />
+      <File FileName="Assets/JULIAN dont look/scripts/JulianWorldMan.cs" Line="16" Column="5" />
       <File FileName="Assets/JULIAN dont look/scripts/OtherPlanes.cs" Line="23" Column="13" />
-      <File FileName="Assets/JULIAN dont look/scripts/CamLook.cs" Line="1" Column="1" />
-      <File FileName="Assets/JULIAN dont look/scripts/PlayerControl.cs" Line="128" Column="10" />
+      <File FileName="Assets/JULIAN dont look/scripts/CamLook.cs" Line="38" Column="82" />
+      <File FileName="Assets/JULIAN dont look/scripts/PlayerControl.cs" Line="156" Column="22" />
+      <File FileName="Assets/JULIAN dont look/scripts/GroundObject.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.exquisiteCorpse PreferredExecutionTarget="Unity.Editor" />

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -13,6 +14,10 @@ public class PlayerControl : MonoBehaviour
     AudioReverbZone arz;
 
     public Material halftoneMat;
+
+    public Transform sphere;
+
+
     // Use this for initialization
     void Start()
     {
@@ -23,14 +28,18 @@ public class PlayerControl : MonoBehaviour
         arz = GetComponent<AudioReverbZone>();
     }
     float tim;
-    bool activatedHandle, activatedParachute;
+    bool activatedHandle, activatedParachute, tooCloseActivateAnyways;
     // Update is called once per frame
     void Update()
     {
+        if (Vector3.Distance(transform.position, sphere.position) < 700)
+            tooCloseActivateAnyways = true;
+
         if (!activatedParachute)
             DoHandleBar();
         else
             DoParachute();
+
 
     }
 
@@ -38,7 +47,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (!activatedHandle)
         {
-            if (Input.GetKey(KeyCode.Mouse0))
+            if (Input.GetKey(KeyCode.Mouse0) || tooCloseActivateAnyways)
             {
                 if (lerpVal < 0.8f)
                     lerpVal += Time.deltaTime * 0.2f;
@@ -81,13 +90,14 @@ public class PlayerControl : MonoBehaviour
         }
         parachuteHandle.localEulerAngles = new Vector3(Mathf.Lerp(0, 60, lerpVal), 0, 0);
 
-        halftoneMat.SetFloat("_greyscale", 1 - lerpVal);
+        if (!tooCloseActivateAnyways)
+            halftoneMat.SetFloat("_greyscale", 1 - lerpVal);
 
         if (activatedParachute)
             lerpVal = 0;
     }
     bool deployedPchute, hasCStrength, playedChuteSound;
-    float freqMat = 200, cStrength;
+    float freqMat = 200, cStrength, safetyFinalTimer;
     void DoParachute()
     {
         if (!hasCStrength)
@@ -118,14 +128,17 @@ public class PlayerControl : MonoBehaviour
         }
         else
         {
+            safetyFinalTimer += Time.deltaTime;
+
             transform.parent = null;
             transform.position += Vector3.up * Time.deltaTime * 8;
             if (plane.eulerAngles.x < 80)
                 plane.eulerAngles += Vector3.right * Time.deltaTime * 10;
 
-            arz.enabled = true;
+            if (!tooCloseActivateAnyways)
+                arz.enabled = true;
 
-            if (Input.GetKey(KeyCode.Mouse0))
+            if (Input.GetKey(KeyCode.Mouse0) || safetyFinalTimer > 50)
             {
                 if (freqMat > 0.01f)
                 {
@@ -135,7 +148,7 @@ public class PlayerControl : MonoBehaviour
                 }
                 else
                 {
-                    //set timer here in case people dont click till the end
+
                     if (cStrength > 0.45f)
                     {
                         cStrength -= Time.deltaTime * 0.2f;
@@ -143,7 +156,8 @@ public class PlayerControl : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("reached ending");
+                        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);//activate this for real deal!
+                        Debug.Log("reached ending should transition now");
                     }
 
                     musicSource.volume = cStrength - 0.5f;

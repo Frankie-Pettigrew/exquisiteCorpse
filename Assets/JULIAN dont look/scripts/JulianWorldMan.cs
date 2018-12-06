@@ -14,6 +14,7 @@ public class JulianWorldMan : MonoBehaviour
     public AudioClip engineLoop;
     CamLook c;
 
+    public List<Mesh> meshes = new List<Mesh>();
 
     // Use this for initialization
     void Start()
@@ -40,7 +41,7 @@ public class JulianWorldMan : MonoBehaviour
 
         if (openingTim > 10)
         {
-            if (openingTim > 20)
+            if (openingTim > 25)
             {
 
                 if (initText.color.a > 0)
