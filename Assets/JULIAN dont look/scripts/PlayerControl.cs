@@ -6,7 +6,11 @@ public class PlayerControl : MonoBehaviour
 {
 
     public Transform parachuteHandle, actualParachute, plane;
+    public AudioSource crankSource, musicSource;
+    AudioSource pChuteSource;
+    public AudioClip crankSound2;
     float lerpVal;
+    AudioReverbZone arz;
 
     public Material halftoneMat;
     // Use this for initialization
@@ -14,6 +18,9 @@ public class PlayerControl : MonoBehaviour
     {
         halftoneMat.SetFloat("_greyscale", 1);
         halftoneMat.SetFloat("_frequency", freqMat);
+
+        pChuteSource = actualParachute.GetComponent<AudioSource>();
+        arz = GetComponent<AudioReverbZone>();
     }
     float tim;
     bool activatedHandle, activatedParachute;
@@ -39,15 +46,23 @@ public class PlayerControl : MonoBehaviour
                 {
                     activatedHandle = true;
                 }
+                if (!crankSource.isPlaying)
+                    crankSource.Play();
             }
             else
             {
+                crankSource.Stop();
                 if (lerpVal > 0)
                     lerpVal -= Time.deltaTime * 2;
             }
         }
         else
         {
+            crankSource.clip = crankSound2;
+            crankSource.loop = false;
+            if (!crankSource.isPlaying)
+                crankSource.Play();
+
             if (tim < 1f)
             {
                 tim += Time.deltaTime;
@@ -71,7 +86,7 @@ public class PlayerControl : MonoBehaviour
         if (activatedParachute)
             lerpVal = 0;
     }
-    bool deployedPchute, hasCStrength;
+    bool deployedPchute, hasCStrength, playedChuteSound;
     float freqMat = 200, cStrength;
     void DoParachute()
     {
@@ -94,6 +109,12 @@ public class PlayerControl : MonoBehaviour
 
             if (deployedPchute)
                 lerpVal = 0;
+
+            if (!playedChuteSound)
+            {
+                pChuteSource.Play();
+                playedChuteSound = true;
+            }
         }
         else
         {
@@ -101,6 +122,8 @@ public class PlayerControl : MonoBehaviour
             transform.position += Vector3.up * Time.deltaTime * 8;
             if (plane.eulerAngles.x < 80)
                 plane.eulerAngles += Vector3.right * Time.deltaTime * 10;
+
+            arz.enabled = true;
 
             if (Input.GetKey(KeyCode.Mouse0))
             {
@@ -123,6 +146,7 @@ public class PlayerControl : MonoBehaviour
                         Debug.Log("reached ending");
                     }
 
+                    musicSource.volume = cStrength - 0.5f;
                 }
             }
         }

@@ -10,7 +10,7 @@ public class JulianWorldMan : MonoBehaviour
 
     public Material halftoneMat;
     public Text initText;
-    public AudioSource planeEngineSound;
+    public AudioSource planeEngineSound, music;
     public AudioClip engineLoop;
     CamLook c;
 
@@ -46,7 +46,11 @@ public class JulianWorldMan : MonoBehaviour
                 if (initText.color.a > 0)
                     initText.color -= new Color(0, 0, 0, Time.deltaTime);
                 else
-                    addHalfToneColorStrength(0.2f, 1.5f);
+                {
+                    addHalfToneColorStrength(0.5f, 1.5f);
+                    if (!music.isPlaying)
+                        music.PlayDelayed(1);
+                }
 
                 if (!planeEngineSound.isPlaying)
                 {
@@ -56,6 +60,10 @@ public class JulianWorldMan : MonoBehaviour
                 }
 
                 c.enabled = true;
+
+                if (planeEngineSound.volume > 0.6f)
+                    planeEngineSound.volume -= Time.deltaTime * 0.5f;
+
             }
             else
             {
