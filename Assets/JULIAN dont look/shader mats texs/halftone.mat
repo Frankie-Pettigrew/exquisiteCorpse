@@ -32,11 +32,11 @@ Material:
     - _Float11: 20
     - _Float7: 20
     - _cStrength: 1.5
-    - _colorStrength: 1.4482088
+    - _colorStrength: 0.44738778
     - _effectStrength: 1
-    - _frequency: 0.009943994
+    - _frequency: 0.009845978
     - _greyScaleStrength: 1
-    - _greyscale: 0.7626223
+    - _greyscale: -0.018356085
     - _kStrength: 1.5
     - _mStrength: 1.5
     - _paper_like: 1

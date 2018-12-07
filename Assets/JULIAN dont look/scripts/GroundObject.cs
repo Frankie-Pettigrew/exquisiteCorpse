@@ -50,9 +50,9 @@ public class GroundObject : MonoBehaviour
 
     void PickNewMesh()//change their shader to a more foggy one- maybe noise affects transparency somehow?
     {
-        rotationDirection = new Vector3(Random.Range(-1.0f, 1.0f) * Time.deltaTime,
-                                        Random.Range(-1.0f, 1.0f) * Time.deltaTime,
-                                        Random.Range(-1.0f, 1.0f) * Time.deltaTime);
+        rotationDirection = new Vector3(Random.Range(-1.0f, 1.0f) * Time.deltaTime * 2,
+                                        Random.Range(-1.0f, 1.0f) * Time.deltaTime * 2,
+                                        Random.Range(-1.0f, 1.0f) * Time.deltaTime * 2);
 
         m.mesh = worldMan.meshes[Random.Range(0, worldMan.meshes.Count)];
 

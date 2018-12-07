@@ -26,6 +26,8 @@ public class PlayerControl : MonoBehaviour
 
         pChuteSource = actualParachute.GetComponent<AudioSource>();
         arz = GetComponent<AudioReverbZone>();
+
+        enabled = false;
     }
     float tim;
     bool activatedHandle, activatedParachute, tooCloseActivateAnyways;

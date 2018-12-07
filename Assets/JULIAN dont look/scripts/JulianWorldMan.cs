@@ -23,6 +23,8 @@ public class JulianWorldMan : MonoBehaviour
         initText.color = Color.clear;
         c = Camera.main.GetComponent<CamLook>();
         c.enabled = false;
+
+
     }
 
     // Update is called once per frame
@@ -61,6 +63,7 @@ public class JulianWorldMan : MonoBehaviour
                 }
 
                 c.enabled = true;
+                c.transform.parent.GetComponent<PlayerControl>().enabled = true;
 
                 if (planeEngineSound.volume > 0.6f)
                     planeEngineSound.volume -= Time.deltaTime * 0.5f;
