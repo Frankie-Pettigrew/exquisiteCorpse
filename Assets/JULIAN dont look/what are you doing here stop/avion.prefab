@@ -580,6 +580,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainPlane: {fileID: 0}
   pChute: {fileID: 4172657504310108}
+  sphere: {fileID: 0}
+  distForChute: 0
 --- !u!114 &114374797088817012
 MonoBehaviour:
   m_ObjectHideFlags: 1
